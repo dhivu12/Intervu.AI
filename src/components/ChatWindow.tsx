@@ -74,20 +74,20 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
       let newMessages: Message[] = [];
 
       if (interviewState === 'awaiting_role') {
-        const userRole = currentInput.trim();
+        const userRole = currentInput.trim().toLowerCase();
         const generalQuestions = roleBasedQuestions["General"] || [];
         
-        const matchedRoleKey = Object.keys(roleBasedQuestions).find(key => key.toLowerCase() === userRole.toLowerCase());
+        const matchedRoleKey = Object.keys(roleBasedQuestions).find(key => key.toLowerCase().includes(userRole) && key !== "General");
 
         let questionsForInterview: Question[] = [];
         let greetingText = "";
 
-        if (matchedRoleKey && matchedRoleKey !== "General") {
+        if (matchedRoleKey) {
             questionsForInterview = [...roleBasedQuestions[matchedRoleKey], ...generalQuestions];
             greetingText = `Great! We'll start the interview for a ${matchedRoleKey} role.`;
         } else {
             questionsForInterview = [...generalQuestions];
-            greetingText = `I don't have specific questions for a "${userRole}" role, so we'll proceed with general interview questions. Let's begin.`;
+            greetingText = `I don't have specific questions for a "${currentInput}" role, so we'll proceed with general interview questions. Let's begin.`;
         }
 
         const shuffledQuestions = questionsForInterview.sort(() => 0.5 - Math.random());
