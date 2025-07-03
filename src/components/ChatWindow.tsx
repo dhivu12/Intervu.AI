@@ -18,6 +18,31 @@ const initialMessages: Message[] = [
   },
 ];
 
+// --- Feedback Pools for Dynamic Suggestions ---
+const positiveFeedbackPool = [
+    "That's a strong, detailed answer. Well done.",
+    "Excellent response! You've clearly highlighted your skills.",
+    "Great answer. The example you provided was very insightful.",
+    "Very well put. That's exactly the kind of experience we're looking for."
+];
+
+const neutralFeedbackPool = [
+    "That's a solid answer. To make it even stronger, try to include specific results or metrics to quantify your impact.",
+    "Good start. You can enhance your answer by using the STAR method (Situation, Task, Action, Result) to structure your story.",
+    "Okay, that's a clear response. Next time, consider adding more detail about the outcome of your actions.",
+    "That's a good point. To add more weight, you could mention what you learned from that experience."
+];
+
+const negativeFeedbackIntroPool = [
+    "Thanks for your answer. For future reference, here's a way you could frame that response more strongly:",
+    "I see. A more effective way to answer that might focus on the learnings. For example:",
+    "Okay. When answering this type of question, it's helpful to structure your response clearly. Here's a suggestion:",
+    "Thanks for sharing. To make that answer more compelling, consider this approach:"
+];
+
+const getRandomItem = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+// --- End of Feedback Pools ---
+
 const analyzeSentiment = (text: string): Sentiment => {
   const positiveKeywords = ['achieved', 'success', 'proud', 'led', 'improved', 'created', 'resolved', 'efficiently', 'effectively', 'completed', 'launched', 'drove', 'spearheaded', 'mentored'];
   const negativeKeywords = ['failed', 'problem', 'difficult', "couldn't", 'struggled', 'issue', 'bad', 'never', 'mistake', 'unable'];
@@ -108,11 +133,12 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
         setActiveSentiment(sentiment);
 
         if (sentiment === 'Positive') {
-            newMessages.push({ text: "That's a strong, detailed answer. Well done.", sender: "ai" });
+            newMessages.push({ text: getRandomItem(positiveFeedbackPool), sender: "ai" });
         } else if (sentiment === 'Negative' && currentQuestion) {
-            newMessages.push({ text: `Thanks for your answer. For future reference, here's a way you could frame that response more strongly:\n\n"${currentQuestion.suggestedAnswer}"`, sender: "ai" });
+            const intro = getRandomItem(negativeFeedbackIntroPool);
+            newMessages.push({ text: `${intro}\n\n"${currentQuestion.suggestedAnswer}"`, sender: "ai" });
         } else if (sentiment === 'Neutral') {
-             newMessages.push({ text: "That's a solid answer. To make it even stronger, try to include specific results or metrics to quantify your impact.", sender: "ai" });
+             newMessages.push({ text: getRandomItem(neutralFeedbackPool), sender: "ai" });
         }
 
         if (availableQuestions.length > 0) {
