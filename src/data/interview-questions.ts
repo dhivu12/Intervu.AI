@@ -1,54 +1,67 @@
-import { Sentiment } from "@/components/SentimentCard";
-
 export type Question = {
   question: string;
   suggestedAnswer: string;
 };
 
-// Expanded and shuffled question pool with suggested answers
-export const allQuestions: Question[] = [
+export type RoleQuestions = {
+  [role: string]: Question[];
+};
+
+export const roleBasedQuestions: RoleQuestions = {
+  "General": [
     {
-        question: "Tell me about a time you had to handle a difficult stakeholder.",
-        suggestedAnswer: "A good answer would follow the STAR method: Situation (describe the context), Task (what was required of you), Action (what you did), and Result (the positive outcome). For example: 'In my previous role, a key stakeholder for a project was unhappy with our progress (Situation). My task was to manage their expectations and get their buy-in (Task). I scheduled a meeting to demonstrate the work we'd done and created a new, more detailed timeline with clear milestones (Action). As a result, the stakeholder felt heard and became a strong advocate for the project, which we delivered on time (Result).'"
+      question: "Tell me about a time you had to handle a difficult stakeholder.",
+      suggestedAnswer: "A good answer would follow the STAR method: Situation (describe the context), Task (what was required of you), Action (what you did), and Result (the positive outcome). For example: 'In my previous role, a key stakeholder for a project was unhappy with our progress (Situation). My task was to manage their expectations and get their buy-in (Task). I scheduled a meeting to demonstrate the work we'd done and created a new, more detailed timeline with clear milestones (Action). As a result, the stakeholder felt heard and became a strong advocate for the project, which we delivered on time (Result).'"
     },
     {
-        question: "How do you prioritize your work when you have multiple competing deadlines?",
-        suggestedAnswer: "Focus on your method. For example: 'I use a combination of the Eisenhower Matrix and impact analysis. I categorize tasks by urgency and importance. For tasks of similar priority, I assess which will have the greatest impact on our team's goals. I also believe in proactive communication, so I keep my manager updated on my workload and potential bottlenecks.'"
+      question: "How do you prioritize your work when you have multiple competing deadlines?",
+      suggestedAnswer: "Focus on your method. For example: 'I use a combination of the Eisenhower Matrix and impact analysis. I categorize tasks by urgency and importance. For tasks of similar priority, I assess which will have the greatest impact on our team's goals. I also believe in proactive communication, so I keep my manager updated on my workload and potential bottlenecks.'"
     },
     {
-        question: "Describe a project you are particularly proud of and explain your role in it.",
-        suggestedAnswer: "Be specific and highlight your contributions. 'I'm very proud of the Project X launch. I was responsible for developing the user authentication module. I took the initiative to implement multi-factor authentication, which wasn't in the original spec but increased security by 30%. The project launched successfully and received great user feedback.'"
+      question: "Describe a time you disagreed with your boss. How did you handle it?",
+      suggestedAnswer: "Focus on professionalism and positive resolution. 'My manager suggested a technical approach I felt wasn't scalable. I gathered data to support an alternative solution and presented it to them privately, focusing on the long-term benefits. They appreciated the research, and we ultimately went with a hybrid approach that incorporated both our ideas.'"
     },
     {
-        question: "Where do you see yourself in five years?",
-        suggestedAnswer: "Show ambition that aligns with the company. 'In five years, I hope to have become a subject matter expert in this field and potentially be in a position to mentor junior team members. I'm excited by the growth opportunities at this company and see a long-term future here.'"
+      question: "Tell me about a time you failed. What did you learn from it?",
+      suggestedAnswer: "Emphasize learning and growth. 'Early in my career, I missed a deadline on a small project because I didn't ask for help. It was a valuable lesson in the importance of communication and teamwork. Since then, I've made it a point to provide regular progress updates and never hesitate to collaborate with colleagues when facing a challenge.'"
     },
     {
-        question: "What is your biggest weakness and how are you working to improve it?",
-        suggestedAnswer: "Choose a real but manageable weakness and show self-awareness. 'In the past, I sometimes took on too much work myself. I've learned to delegate more effectively and trust my teammates. I've been actively practicing this by leading smaller project teams, which has improved our overall efficiency.'"
+      question: "Where do you see yourself in five years?",
+      suggestedAnswer: "Show ambition that aligns with the company. 'In five years, I hope to have become a subject matter expert in this field and potentially be in a position to mentor junior team members. I'm excited by the growth opportunities at this company and see a long-term future here.'"
+    },
+  ],
+  "Software Engineer": [
+    {
+      question: "Describe the most challenging bug you've ever fixed.",
+      suggestedAnswer: "Explain the bug's complexity, your debugging process, and what you learned. 'I once chased a memory leak in a Node.js service that only occurred under heavy load. I used heap dumps and memory profiling tools to trace it back to a third-party library's event listener that wasn't being properly garbage collected. I submitted a patch to the library and implemented a temporary workaround, preventing service crashes and teaching me a lot about memory management.'"
     },
     {
-        question: "Describe a time you disagreed with your boss. How did you handle it?",
-        suggestedAnswer: "Focus on professionalism and positive resolution. 'My manager suggested a technical approach I felt wasn't scalable. I gathered data to support an alternative solution and presented it to them privately, focusing on the long-term benefits. They appreciated the research, and we ultimately went with a hybrid approach that incorporated both our ideas.'"
+      question: "How would you design a simple URL shortening service like TinyURL?",
+      suggestedAnswer: "Discuss system design concepts. 'I'd start with a simple key-value store. The user provides a long URL, the system generates a unique short key (e.g., a 6-character alphanumeric string), and stores the mapping. When a user hits the short URL, the service does a lookup and redirects them. For scalability, I'd consider a distributed database, a load balancer, and a robust algorithm for generating non-colliding short keys, perhaps using a base-62 encoding of a unique counter.'"
     },
     {
-        question: "Tell me about a time you failed. What did you learn from it?",
-        suggestedAnswer: "Emphasize learning and growth. 'Early in my career, I missed a deadline on a small project because I didn't ask for help. It was a valuable lesson in the importance of communication and teamwork. Since then, I've made it a point to provide regular progress updates and never hesitate to collaborate with colleagues when facing a challenge.'"
-    },
-    {
-        question: "Can you describe a time when you had to learn a new skill quickly?",
-        suggestedAnswer: "Focus on your learning process and the outcome. 'In my last project, we needed to integrate a new payment gateway I had no experience with. I dedicated a weekend to reading the documentation and building a small prototype. I was able to quickly grasp the API and successfully implemented the integration ahead of schedule, which became a key feature for our launch.'"
-    },
-    {
-        question: "How do you handle stress and pressure?",
-        suggestedAnswer: "Show that you have healthy coping mechanisms and can stay productive. 'I find that staying organized helps me manage stress. I break down large tasks into smaller, manageable steps. I also believe in taking short breaks to clear my head. This approach helps me stay focused and calm, even when deadlines are tight.'"
-    },
-    {
-        question: "Why are you interested in this role?",
-        suggestedAnswer: "Connect your skills and passion to the job description and company mission. 'I've been following your company's work in AI-driven analytics for a while, and I'm very impressed. This role is a perfect match for my experience in data science and my passion for building tools that solve real-world problems. I'm particularly excited about the opportunity to work on [mention a specific project or product].'"
-    },
-    {
-        question: "What do you know about our company?",
-        suggestedAnswer: "Do your research. Mention their products, recent news, or company culture. 'I know that you are a leader in the cloud computing space, and I was particularly impressed by your recent launch of Product Y. I also read about your commitment to sustainability, which aligns with my own values. I'm excited by your mission to [company mission].'"
+      question: "What's the difference between REST and GraphQL? When would you use one over the other?",
+      suggestedAnswer: "Explain the core concepts. 'REST is an architectural style with fixed endpoints, while GraphQL is a query language that allows clients to request exactly the data they need. I'd use REST for simple, well-defined APIs. I'd choose GraphQL for complex applications with nested data or mobile apps where minimizing data transfer is critical, as it avoids over-fetching.'"
     }
-];
+  ],
+  "Product Manager": [
+    {
+      question: "How would you decide what feature to build next for our product?",
+      suggestedAnswer: "Talk about your prioritization framework. 'I'd use a framework like RICE (Reach, Impact, Confidence, Effort). I'd gather data from user feedback, market research, and stakeholder input to score potential features. This data-driven approach helps us focus on features that deliver the most value to the most users with a reasonable amount of effort.'"
+    },
+    {
+      question: "Our user engagement is down 10% month-over-month. How would you investigate this?",
+      suggestedAnswer: "Show your analytical process. 'First, I'd work with data analysts to segment the drop: is it affecting all users or a specific cohort? Is it tied to a recent release or a change in marketing? I'd then move to qualitative analysis, like user surveys or interviews, to understand the 'why' behind the data. The goal is to form a hypothesis and then test it.'"
+    }
+  ],
+  "Data Scientist": [
+    {
+        question: "Explain the difference between a classification and a regression model.",
+        suggestedAnswer: "Define the core distinction. 'A classification model predicts a discrete category, like 'spam' or 'not spam'. A regression model predicts a continuous value, like a house price or future sales. The key difference is the output: a category versus a number.'"
+    },
+    {
+        question: "You're given a dataset with many missing values. How would you handle it?",
+        suggestedAnswer: "Discuss various techniques. 'My approach depends on the context. If the missing data is small, I might remove the rows. For numerical data, I could use mean, median, or mode imputation. For more complex cases, I might build a predictive model (like k-NN or a regression) to estimate the missing values based on other features in the dataset.'"
+    }
+  ]
+};

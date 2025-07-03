@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
 import { Sentiment } from "./SentimentCard";
-import { allQuestions, Question } from "@/data/interview-questions";
+import { roleBasedQuestions, Question } from "@/data/interview-questions";
 
 type Message = {
   text: string;
@@ -13,33 +13,33 @@ type Message = {
 
 const initialMessages: Message[] = [
   {
-    text: "Hello! I'm your AI interviewer. To get started, please tell me the job role you're applying for.",
+    text: "Hello! I'm your AI interviewer. To get started, please tell me the job role you're applying for (e.g., Software Engineer, Product Manager).",
     sender: "ai",
   },
 ];
 
-const analyzeSentiment = (text: string): Sentiment => {    
-    const positiveKeywords = ['achieved', 'success', 'proud', 'led', 'improved', 'created', 'resolved', 'efficiently', 'effectively', 'completed', 'launched', 'drove', 'spearheaded', 'mentored'];
-    const negativeKeywords = ['failed', 'problem', 'difficult', "couldn't", 'struggled', 'issue', 'bad', 'never', 'mistake', 'unable'];
+const analyzeSentiment = (text: string): Sentiment => {
+  const positiveKeywords = ['achieved', 'success', 'proud', 'led', 'improved', 'created', 'resolved', 'efficiently', 'effectively', 'completed', 'launched', 'drove', 'spearheaded', 'mentored'];
+  const negativeKeywords = ['failed', 'problem', 'difficult', "couldn't", 'struggled', 'issue', 'bad', 'never', 'mistake', 'unable'];
 
-    const lowerText = text.toLowerCase();
-    let score = 0;
+  const lowerText = text.toLowerCase();
+  let score = 0;
 
-    positiveKeywords.forEach(word => {
-        if (lowerText.includes(word)) score++;
-    });
+  positiveKeywords.forEach(word => {
+    if (lowerText.includes(word)) score++;
+  });
 
-    negativeKeywords.forEach(word => {
-        if (lowerText.includes(word)) score--;
-    });
+  negativeKeywords.forEach(word => {
+    if (lowerText.includes(word)) score--;
+  });
 
-    if (score > 0) return "Positive";
-    if (score < 0) return "Negative";
-    return "Neutral";
+  if (score > 0) return "Positive";
+  if (score < 0) return "Negative";
+  return "Neutral";
 }
 
 interface ChatWindowProps {
-    setActiveSentiment: (sentiment: Sentiment) => void;
+  setActiveSentiment: (sentiment: Sentiment) => void;
 }
 
 export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
@@ -49,7 +49,7 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const [interviewState, setInterviewState] = useState<'awaiting_role' | 'in_progress' | 'finished'>('awaiting_role');
-  const [availableQuestions, setAvailableQuestions] = useState<Question[]>(() => [...allQuestions].sort(() => 0.5 - Math.random()));
+  const [availableQuestions, setAvailableQuestions] = useState<Question[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
 
   const scrollToBottom = () => {
@@ -74,15 +74,29 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
       let newMessages: Message[] = [];
 
       if (interviewState === 'awaiting_role') {
-        newMessages.push({
-            text: `Great! We'll start the interview for a ${currentInput} role.`,
-            sender: "ai",
-        });
+        const userRole = currentInput.trim();
+        const generalQuestions = roleBasedQuestions["General"] || [];
+        
+        const matchedRoleKey = Object.keys(roleBasedQuestions).find(key => key.toLowerCase() === userRole.toLowerCase());
 
-        if (availableQuestions.length > 0) {
-            const firstQuestion = availableQuestions[0];
+        let questionsForInterview: Question[] = [];
+        let greetingText = "";
+
+        if (matchedRoleKey && matchedRoleKey !== "General") {
+            questionsForInterview = [...roleBasedQuestions[matchedRoleKey], ...generalQuestions];
+            greetingText = `Great! We'll start the interview for a ${matchedRoleKey} role.`;
+        } else {
+            questionsForInterview = [...generalQuestions];
+            greetingText = `I don't have specific questions for a "${userRole}" role, so we'll proceed with general interview questions. Let's begin.`;
+        }
+
+        const shuffledQuestions = questionsForInterview.sort(() => 0.5 - Math.random());
+        newMessages.push({ text: greetingText, sender: "ai" });
+
+        if (shuffledQuestions.length > 0) {
+            const firstQuestion = shuffledQuestions[0];
             setCurrentQuestion(firstQuestion);
-            setAvailableQuestions(availableQuestions.slice(1));
+            setAvailableQuestions(shuffledQuestions.slice(1));
             newMessages.push({ text: firstQuestion.question, sender: "ai" });
             setInterviewState('in_progress');
         } else {
@@ -94,20 +108,11 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
         setActiveSentiment(sentiment);
 
         if (sentiment === 'Positive') {
-            newMessages.push({
-                text: "That's a strong, detailed answer. Well done.",
-                sender: "ai",
-            });
+            newMessages.push({ text: "That's a strong, detailed answer. Well done.", sender: "ai" });
         } else if (sentiment === 'Negative' && currentQuestion) {
-            newMessages.push({
-                text: `Thanks for your answer. For future reference, here's a way you could frame that response more strongly:\n\n"${currentQuestion.suggestedAnswer}"`,
-                sender: "ai",
-            });
+            newMessages.push({ text: `Thanks for your answer. For future reference, here's a way you could frame that response more strongly:\n\n"${currentQuestion.suggestedAnswer}"`, sender: "ai" });
         } else if (sentiment === 'Neutral') {
-             newMessages.push({
-                text: "That's a solid answer. To make it even stronger, try to include specific results or metrics to quantify your impact.",
-                sender: "ai",
-            });
+             newMessages.push({ text: "That's a solid answer. To make it even stronger, try to include specific results or metrics to quantify your impact.", sender: "ai" });
         }
 
         if (availableQuestions.length > 0) {
@@ -116,10 +121,7 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
             setAvailableQuestions(availableQuestions.slice(1));
             newMessages.push({ text: nextQuestion.question, sender: "ai" });
         } else {
-            newMessages.push({
-                text: "That was the last question. Thank you for your time! The interview is now complete. You can analyze your sentiment score on the right.",
-                sender: "ai",
-            });
+            newMessages.push({ text: "That was the last question. Thank you for your time! The interview is now complete.", sender: "ai" });
             setInterviewState('finished');
         }
       }
