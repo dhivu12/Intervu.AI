@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import React from "react";
 
-type Sentiment = "Positive" | "Neutral" | "Negative";
+export type Sentiment = "Positive" | "Neutral" | "Negative";
 
 interface SentimentDisplayProps {
   sentiment: Sentiment;
@@ -31,21 +31,11 @@ const SentimentDisplay: React.FC<SentimentDisplayProps> = ({ sentiment, emoji, c
   </div>
 );
 
-export const SentimentCard = () => {
-  // Mock sentiment state. In a real app, this would come from props or state management.
-  const [activeSentiment, setActiveSentiment] = React.useState<Sentiment>("Neutral");
+interface SentimentCardProps {
+    activeSentiment: Sentiment;
+}
 
-  // This is for demonstration purposes to cycle through sentiments
-  React.useEffect(() => {
-    const sentiments: Sentiment[] = ["Positive", "Neutral", "Negative"];
-    let i = 0;
-    const interval = setInterval(() => {
-      i = (i + 1) % sentiments.length;
-      setActiveSentiment(sentiments[i]);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
+export const SentimentCard = ({ activeSentiment }: SentimentCardProps) => {
   return (
     <Card className="border-slate-700 bg-slate-800/50 text-white shadow-2xl backdrop-blur-sm">
       <CardHeader>

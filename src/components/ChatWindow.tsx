@@ -3,29 +3,48 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
+import { Sentiment } from "./SentimentCard";
 
 type Message = {
   text: string;
   sender: "user" | "ai";
 };
 
-// Expanded and shuffled question pool
-const allQuestions = [
-    "Tell me about a time you had to handle a difficult stakeholder.",
-    "How do you prioritize your work when you have multiple competing deadlines?",
-    "Describe a project you are particularly proud of and explain your role in it.",
-    "Where do you see yourself in five years?",
-    "What is your biggest weakness and how are you working to improve it?",
-    "Can you describe a time when you had to learn a new skill quickly?",
-    "How do you handle stress and pressure?",
-    "What are your salary expectations?",
-    "Why are you interested in this role?",
-    "What do you know about our company?",
-    "Describe a time you disagreed with your boss. How did you handle it?",
-    "How do you stay updated with the latest industry trends?",
-    "What makes you a good team player?",
-    "Tell me about a time you failed. What did you learn from it?",
-    "What is your leadership style?"
+type Question = {
+  question: string;
+  suggestedAnswer: string;
+};
+
+// Expanded and shuffled question pool with suggested answers
+const allQuestions: Question[] = [
+    {
+        question: "Tell me about a time you had to handle a difficult stakeholder.",
+        suggestedAnswer: "A good answer would follow the STAR method: Situation (describe the context), Task (what was required of you), Action (what you did), and Result (the positive outcome). For example: 'In my previous role, a key stakeholder for a project was unhappy with our progress (Situation). My task was to manage their expectations and get their buy-in (Task). I scheduled a meeting to demonstrate the work we'd done and created a new, more detailed timeline with clear milestones (Action). As a result, the stakeholder felt heard and became a strong advocate for the project, which we delivered on time (Result).'"
+    },
+    {
+        question: "How do you prioritize your work when you have multiple competing deadlines?",
+        suggestedAnswer: "Focus on your method. For example: 'I use a combination of the Eisenhower Matrix and impact analysis. I categorize tasks by urgency and importance. For tasks of similar priority, I assess which will have the greatest impact on our team's goals. I also believe in proactive communication, so I keep my manager updated on my workload and potential bottlenecks.'"
+    },
+    {
+        question: "Describe a project you are particularly proud of and explain your role in it.",
+        suggestedAnswer: "Be specific and highlight your contributions. 'I'm very proud of the Project X launch. I was responsible for developing the user authentication module. I took the initiative to implement multi-factor authentication, which wasn't in the original spec but increased security by 30%. The project launched successfully and received great user feedback.'"
+    },
+    {
+        question: "Where do you see yourself in five years?",
+        suggestedAnswer: "Show ambition that aligns with the company. 'In five years, I hope to have become a subject matter expert in this field and potentially be in a position to mentor junior team members. I'm excited by the growth opportunities at this company and see a long-term future here.'"
+    },
+    {
+        question: "What is your biggest weakness and how are you working to improve it?",
+        suggestedAnswer: "Choose a real but manageable weakness and show self-awareness. 'In the past, I sometimes took on too much work myself. I've learned to delegate more effectively and trust my teammates. I've been actively practicing this by leading smaller project teams, which has improved our overall efficiency.'"
+    },
+    {
+        question: "Describe a time you disagreed with your boss. How did you handle it?",
+        suggestedAnswer: "Focus on professionalism and positive resolution. 'My manager suggested a technical approach I felt wasn't scalable. I gathered data to support an alternative solution and presented it to them privately, focusing on the long-term benefits. They appreciated the research, and we ultimately went with a hybrid approach that incorporated both our ideas.'"
+    },
+    {
+        question: "Tell me about a time you failed. What did you learn from it?",
+        suggestedAnswer: "Emphasize learning and growth. 'Early in my career, I missed a deadline on a small project because I didn't ask for help. It was a valuable lesson in the importance of communication and teamwork. Since then, I've made it a point to provide regular progress updates and never hesitate to collaborate with colleagues when facing a challenge.'"
+    }
 ];
 
 const initialMessages: Message[] = [
@@ -35,14 +54,39 @@ const initialMessages: Message[] = [
   },
 ];
 
-export const ChatWindow = () => {
+const analyzeSentiment = (text: string): Sentiment => {    
+    const positiveKeywords = ['achieved', 'success', 'proud', 'led', 'improved', 'created', 'resolved', 'efficiently', 'effectively', 'completed', 'launched', 'drove'];
+    const negativeKeywords = ['failed', 'problem', 'difficult', "couldn't", 'struggled', 'issue', 'bad', 'never', 'mistake'];
+
+    const lowerText = text.toLowerCase();
+    let score = 0;
+
+    positiveKeywords.forEach(word => {
+        if (lowerText.includes(word)) score++;
+    });
+
+    negativeKeywords.forEach(word => {
+        if (lowerText.includes(word)) score--;
+    });
+
+    if (score > 0) return "Positive";
+    if (score < 0) return "Negative";
+    return "Neutral";
+}
+
+interface ChatWindowProps {
+    setActiveSentiment: (sentiment: Sentiment) => void;
+}
+
+export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const [interviewState, setInterviewState] = useState<'awaiting_role' | 'in_progress' | 'finished'>('awaiting_role');
-  const [availableQuestions, setAvailableQuestions] = useState<string[]>(() => [...allQuestions].sort(() => 0.5 - Math.random()));
+  const [availableQuestions, setAvailableQuestions] = useState<Question[]>(() => [...allQuestions].sort(() => 0.5 - Math.random()));
+  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -62,55 +106,53 @@ export const ChatWindow = () => {
     setInput("");
     setIsTyping(true);
 
-    // Simulate AI response
     setTimeout(() => {
+      let newMessages: Message[] = [];
+
       if (interviewState === 'awaiting_role') {
-        const aiGreeting: Message = {
+        newMessages.push({
             text: `Great! We'll start the interview for a ${currentInput} role.`,
             sender: "ai",
-        };
+        });
 
         if (availableQuestions.length > 0) {
             const firstQuestion = availableQuestions[0];
-            const updatedAvailableQuestions = availableQuestions.slice(1);
-            setAvailableQuestions(updatedAvailableQuestions);
-
-            const aiQuestion: Message = {
-                text: firstQuestion,
-                sender: "ai",
-            };
-            setMessages((prev) => [...prev, aiGreeting, aiQuestion]);
+            setCurrentQuestion(firstQuestion);
+            setAvailableQuestions(availableQuestions.slice(1));
+            newMessages.push({ text: firstQuestion.question, sender: "ai" });
             setInterviewState('in_progress');
         } else {
-             const finalMessage: Message = {
-                text: "It seems I'm out of questions! The interview is complete.",
-                sender: "ai",
-            };
-            setMessages((prev) => [...prev, aiGreeting, finalMessage]);
+            newMessages.push({ text: "It seems I'm out of questions! The interview is complete.", sender: "ai" });
             setInterviewState('finished');
         }
       } else if (interviewState === 'in_progress') {
+        const sentiment = analyzeSentiment(currentInput);
+        setActiveSentiment(sentiment);
+
+        if (sentiment === 'Negative' && currentQuestion) {
+            newMessages.push({
+                text: `Thanks for your answer. For future reference, here's a way you could frame that response more strongly: \n\n"${currentQuestion.suggestedAnswer}"`,
+                sender: "ai",
+            });
+        }
+
         if (availableQuestions.length > 0) {
             const nextQuestion = availableQuestions[0];
-            const updatedAvailableQuestions = availableQuestions.slice(1);
-            setAvailableQuestions(updatedAvailableQuestions);
-
-            const aiQuestion: Message = {
-                text: nextQuestion,
-                sender: "ai",
-            };
-            setMessages((prev) => [...prev, aiQuestion]);
+            setCurrentQuestion(nextQuestion);
+            setAvailableQuestions(availableQuestions.slice(1));
+            newMessages.push({ text: nextQuestion.question, sender: "ai" });
         } else {
-            const finalMessage: Message = {
+            newMessages.push({
                 text: "That was the last question. Thank you for your time! The interview is now complete. You can analyze your sentiment score on the right.",
                 sender: "ai",
-            };
-            setMessages((prev) => [...prev, finalMessage]);
+            });
             setInterviewState('finished');
         }
       }
+      
+      setMessages((prev) => [...prev, ...newMessages]);
       setIsTyping(false);
-    }, 1500);
+    }, 2000);
   };
 
   const getPlaceholderText = () => {
