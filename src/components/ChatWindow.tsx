@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
+import { Send, RefreshCw } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
 import { Sentiment } from "./SentimentCard";
 import { roleBasedQuestions, Question } from "@/data/interview-questions";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 type Message = {
   text: string;
@@ -59,6 +60,16 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isTyping]);
+
+  const handleReset = () => {
+    setMessages(initialMessages);
+    setInterviewState('awaiting_role');
+    setCurrentQuestion(null);
+    setAvailableQuestions([]);
+    setInput("");
+    setIsTyping(false);
+    setActiveSentiment('Neutral');
+  };
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
@@ -170,10 +181,26 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
             type="submit"
             size="icon"
             className="rounded-full bg-indigo-600 text-white shadow-lg shadow-indigo-600/50 transition-all hover:bg-indigo-500 hover:shadow-indigo-500/60 focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-slate-900"
-            disabled={isTyping || interviewState === 'finished'}
+            disabled={isTyping || !input.trim()}
           >
             <Send size={20} />
           </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={handleReset}
+                className="rounded-full border-slate-600 bg-slate-800 text-gray-400 transition-colors hover:bg-slate-700 hover:text-white"
+              >
+                <RefreshCw size={20} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Change Role / Restart</p>
+            </TooltipContent>
+          </Tooltip>
         </form>
       </div>
     </div>
