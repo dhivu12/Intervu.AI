@@ -21,7 +21,7 @@ export const ChatMessage = ({ message }: ChatMessageProps) => {
       {isAi && <AssistantAvatar className="h-8 w-8" />}
       <div
         className={cn(
-          "max-w-sm rounded-xl px-4 py-3 text-sm md:max-w-md",
+          "max-w-sm rounded-xl px-4 py-3 text-sm md:max-w-md whitespace-pre-wrap",
           isAi
             ? "bg-slate-700 text-gray-200"
             : "bg-indigo-600 text-white"

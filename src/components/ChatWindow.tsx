@@ -4,48 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
 import { Sentiment } from "./SentimentCard";
+import { allQuestions, Question } from "@/data/interview-questions";
 
 type Message = {
   text: string;
   sender: "user" | "ai";
 };
-
-type Question = {
-  question: string;
-  suggestedAnswer: string;
-};
-
-// Expanded and shuffled question pool with suggested answers
-const allQuestions: Question[] = [
-    {
-        question: "Tell me about a time you had to handle a difficult stakeholder.",
-        suggestedAnswer: "A good answer would follow the STAR method: Situation (describe the context), Task (what was required of you), Action (what you did), and Result (the positive outcome). For example: 'In my previous role, a key stakeholder for a project was unhappy with our progress (Situation). My task was to manage their expectations and get their buy-in (Task). I scheduled a meeting to demonstrate the work we'd done and created a new, more detailed timeline with clear milestones (Action). As a result, the stakeholder felt heard and became a strong advocate for the project, which we delivered on time (Result).'"
-    },
-    {
-        question: "How do you prioritize your work when you have multiple competing deadlines?",
-        suggestedAnswer: "Focus on your method. For example: 'I use a combination of the Eisenhower Matrix and impact analysis. I categorize tasks by urgency and importance. For tasks of similar priority, I assess which will have the greatest impact on our team's goals. I also believe in proactive communication, so I keep my manager updated on my workload and potential bottlenecks.'"
-    },
-    {
-        question: "Describe a project you are particularly proud of and explain your role in it.",
-        suggestedAnswer: "Be specific and highlight your contributions. 'I'm very proud of the Project X launch. I was responsible for developing the user authentication module. I took the initiative to implement multi-factor authentication, which wasn't in the original spec but increased security by 30%. The project launched successfully and received great user feedback.'"
-    },
-    {
-        question: "Where do you see yourself in five years?",
-        suggestedAnswer: "Show ambition that aligns with the company. 'In five years, I hope to have become a subject matter expert in this field and potentially be in a position to mentor junior team members. I'm excited by the growth opportunities at this company and see a long-term future here.'"
-    },
-    {
-        question: "What is your biggest weakness and how are you working to improve it?",
-        suggestedAnswer: "Choose a real but manageable weakness and show self-awareness. 'In the past, I sometimes took on too much work myself. I've learned to delegate more effectively and trust my teammates. I've been actively practicing this by leading smaller project teams, which has improved our overall efficiency.'"
-    },
-    {
-        question: "Describe a time you disagreed with your boss. How did you handle it?",
-        suggestedAnswer: "Focus on professionalism and positive resolution. 'My manager suggested a technical approach I felt wasn't scalable. I gathered data to support an alternative solution and presented it to them privately, focusing on the long-term benefits. They appreciated the research, and we ultimately went with a hybrid approach that incorporated both our ideas.'"
-    },
-    {
-        question: "Tell me about a time you failed. What did you learn from it?",
-        suggestedAnswer: "Emphasize learning and growth. 'Early in my career, I missed a deadline on a small project because I didn't ask for help. It was a valuable lesson in the importance of communication and teamwork. Since then, I've made it a point to provide regular progress updates and never hesitate to collaborate with colleagues when facing a challenge.'"
-    }
-];
 
 const initialMessages: Message[] = [
   {
@@ -55,8 +19,8 @@ const initialMessages: Message[] = [
 ];
 
 const analyzeSentiment = (text: string): Sentiment => {    
-    const positiveKeywords = ['achieved', 'success', 'proud', 'led', 'improved', 'created', 'resolved', 'efficiently', 'effectively', 'completed', 'launched', 'drove'];
-    const negativeKeywords = ['failed', 'problem', 'difficult', "couldn't", 'struggled', 'issue', 'bad', 'never', 'mistake'];
+    const positiveKeywords = ['achieved', 'success', 'proud', 'led', 'improved', 'created', 'resolved', 'efficiently', 'effectively', 'completed', 'launched', 'drove', 'spearheaded', 'mentored'];
+    const negativeKeywords = ['failed', 'problem', 'difficult', "couldn't", 'struggled', 'issue', 'bad', 'never', 'mistake', 'unable'];
 
     const lowerText = text.toLowerCase();
     let score = 0;
@@ -129,9 +93,19 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
         const sentiment = analyzeSentiment(currentInput);
         setActiveSentiment(sentiment);
 
-        if (sentiment === 'Negative' && currentQuestion) {
+        if (sentiment === 'Positive') {
             newMessages.push({
-                text: `Thanks for your answer. For future reference, here's a way you could frame that response more strongly: \n\n"${currentQuestion.suggestedAnswer}"`,
+                text: "That's a strong, detailed answer. Well done.",
+                sender: "ai",
+            });
+        } else if (sentiment === 'Negative' && currentQuestion) {
+            newMessages.push({
+                text: `Thanks for your answer. For future reference, here's a way you could frame that response more strongly:\n\n"${currentQuestion.suggestedAnswer}"`,
+                sender: "ai",
+            });
+        } else if (sentiment === 'Neutral') {
+             newMessages.push({
+                text: "That's a solid answer. To make it even stronger, try to include specific results or metrics to quantify your impact.",
                 sender: "ai",
             });
         }
