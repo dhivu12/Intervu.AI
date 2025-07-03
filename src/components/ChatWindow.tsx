@@ -13,7 +13,7 @@ type Message = {
 
 const initialMessages: Message[] = [
   {
-    text: "Hello! I'm your AI interviewer. To get started, please tell me the job role you're applying for (e.g., Software Engineer, Product Manager).",
+    text: "Hello! I'm your AI interviewer. To get started, please tell me the job role you're applying for (e.g., Frontend Developer, Backend Developer, Cybersecurity Analyst).",
     sender: "ai",
   },
 ];
@@ -134,7 +134,7 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
   const getPlaceholderText = () => {
     switch (interviewState) {
         case 'awaiting_role':
-            return "e.g., Software Engineer";
+            return "e.g., Frontend Developer";
         case 'in_progress':
             return "Type your answer...";
         case 'finished':
