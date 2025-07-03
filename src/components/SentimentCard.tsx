@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import React from "react";
-import { AnalysisResult, Sentiment } from "@/lib/analysis";
+
+type Sentiment = "Positive" | "Neutral" | "Negative";
 
 interface SentimentDisplayProps {
   sentiment: Sentiment;
@@ -31,12 +31,20 @@ const SentimentDisplay: React.FC<SentimentDisplayProps> = ({ sentiment, emoji, c
   </div>
 );
 
-interface SentimentCardProps {
-  analysis: AnalysisResult | null;
-}
+export const SentimentCard = () => {
+  // Mock sentiment state. In a real app, this would come from props or state management.
+  const [activeSentiment, setActiveSentiment] = React.useState<Sentiment>("Neutral");
 
-export const SentimentCard = ({ analysis }: SentimentCardProps) => {
-  const activeSentiment = analysis?.sentiment || "Neutral";
+  // This is for demonstration purposes to cycle through sentiments
+  React.useEffect(() => {
+    const sentiments: Sentiment[] = ["Positive", "Neutral", "Negative"];
+    let i = 0;
+    const interval = setInterval(() => {
+      i = (i + 1) % sentiments.length;
+      setActiveSentiment(sentiments[i]);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Card className="border-slate-700 bg-slate-800/50 text-white shadow-2xl backdrop-blur-sm">
@@ -44,43 +52,26 @@ export const SentimentCard = ({ analysis }: SentimentCardProps) => {
         <CardTitle className="text-lg font-semibold text-gray-200">
           Live Sentiment Analysis
         </CardTitle>
-        <CardDescription>Your response is analyzed in real-time.</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="space-y-4">
-          <SentimentDisplay
-            sentiment="Positive"
-            emoji="😊"
-            color="bg-green-500"
-            isActive={activeSentiment === "Positive"}
-          />
-          <SentimentDisplay
-            sentiment="Neutral"
-            emoji="😐"
-            color="bg-yellow-500"
-            isActive={activeSentiment === "Neutral"}
-          />
-          <SentimentDisplay
-            sentiment="Negative"
-            emoji="😠"
-            color="bg-red-500"
-            isActive={activeSentiment === "Negative"}
-          />
-        </div>
-        <div>
-          <h3 className="mb-3 text-sm font-semibold text-gray-400">Talking Points</h3>
-          <div className="flex flex-wrap gap-2">
-            {analysis && analysis.keywords.length > 0 ? (
-              analysis.keywords.map((keyword) => (
-                <Badge key={keyword} variant="secondary" className="bg-slate-700 text-slate-200">
-                  {keyword}
-                </Badge>
-              ))
-            ) : (
-              <p className="text-sm text-gray-500">No key topics detected yet...</p>
-            )}
-          </div>
-        </div>
+      <CardContent className="space-y-4">
+        <SentimentDisplay
+          sentiment="Positive"
+          emoji="😊"
+          color="bg-green-500"
+          isActive={activeSentiment === "Positive"}
+        />
+        <SentimentDisplay
+          sentiment="Neutral"
+          emoji="😐"
+          color="bg-yellow-500"
+          isActive={activeSentiment === "Neutral"}
+        />
+        <SentimentDisplay
+          sentiment="Negative"
+          emoji="😠"
+          color="bg-red-500"
+          isActive={activeSentiment === "Negative"}
+        />
       </CardContent>
     </Card>
   );
