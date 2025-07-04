@@ -37,6 +37,38 @@ const analyzeSentiment = (text: string): Sentiment => {
   if (score > 0) return "Positive";
   if (score < 0) return "Negative";
   return "Neutral";
+};
+
+const generateFeedback = (userAnswer: string, question: Question): { sentiment: Sentiment, feedback: string } => {
+    const sentiment = analyzeSentiment(userAnswer);
+
+    const positiveTemplates = [
+        "That's a strong, detailed answer. Well done.",
+        "Excellent response. You've clearly articulated your experience.",
+        "Great answer! You've provided a clear and confident response."
+    ];
+
+    const neutralTemplates = [
+        `That's a solid answer. To make it even stronger, try to include specific results or metrics to quantify your impact. For example, you could frame it like this:\n\n"${question.suggestedAnswer}"`,
+        `Good start. You can enhance your answer by providing more specific details about the outcome. Here's a suggested approach:\n\n"${question.suggestedAnswer}"`
+    ];
+
+    const negativeTemplates = [
+        `Thanks for your answer. For future reference, here's a way you could frame that response more strongly:\n\n"${question.suggestedAnswer}"`,
+        `That's a common challenge. A more structured answer can help showcase your skills better. Here's an example approach:\n\n"${question.suggestedAnswer}"`
+    ];
+
+    let feedback = "";
+
+    if (sentiment === 'Positive') {
+        feedback = positiveTemplates[Math.floor(Math.random() * positiveTemplates.length)];
+    } else if (sentiment === 'Neutral') {
+        feedback = neutralTemplates[Math.floor(Math.random() * neutralTemplates.length)];
+    } else { // Negative
+        feedback = negativeTemplates[Math.floor(Math.random() * negativeTemplates.length)];
+    }
+
+    return { sentiment, feedback };
 }
 
 interface ChatWindowProps {
@@ -114,17 +146,10 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
             newMessages.push({ text: "It seems I'm out of questions! The interview is complete.", sender: "ai" });
             setInterviewState('finished');
         }
-      } else if (interviewState === 'in_progress') {
-        const sentiment = analyzeSentiment(currentInput);
+      } else if (interviewState === 'in_progress' && currentQuestion) {
+        const { sentiment, feedback } = generateFeedback(currentInput, currentQuestion);
         setActiveSentiment(sentiment);
-
-        if (sentiment === 'Positive') {
-            newMessages.push({ text: "That's a strong, detailed answer. Well done.", sender: "ai" });
-        } else if (sentiment === 'Negative' && currentQuestion) {
-            newMessages.push({ text: `Thanks for your answer. For future reference, here's a way you could frame that response more strongly:\n\n"${currentQuestion.suggestedAnswer}"`, sender: "ai" });
-        } else if (sentiment === 'Neutral') {
-             newMessages.push({ text: "That's a solid answer. To make it even stronger, try to include specific results or metrics to quantify your impact.", sender: "ai" });
-        }
+        newMessages.push({ text: feedback, sender: "ai" });
 
         if (availableQuestions.length > 0) {
             const nextQuestion = availableQuestions[0];
