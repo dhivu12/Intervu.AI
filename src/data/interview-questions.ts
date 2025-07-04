@@ -4,7 +4,7 @@ export type Question = {
 };
 
 export type RoleQuestions = {
-  [role: string]: Question[];
+  [role:string]: Question[];
 };
 
 const softwareEngineerQuestions: Question[] = [
@@ -19,6 +19,14 @@ const softwareEngineerQuestions: Question[] = [
     {
       question: "What's the difference between REST and GraphQL? When would you use one over the other?",
       suggestedAnswer: "Explain the core concepts. 'REST is an architectural style with fixed endpoints, while GraphQL is a query language that allows clients to request exactly the data they need. I'd use REST for simple, well-defined APIs. I'd choose GraphQL for complex applications with nested data or mobile apps where minimizing data transfer is critical, as it avoids over-fetching.'"
+    },
+    {
+      question: "What is Big O notation, and why is it important?",
+      suggestedAnswer: "Big O notation is used to describe the performance or complexity of an algorithm. It characterizes the worst-case scenario, focusing on how the execution time or space requirements grow as the input size increases. It's crucial for choosing efficient algorithms, especially when working with large datasets, to avoid performance bottlenecks."
+    },
+    {
+      question: "Explain the difference between an abstract class and an interface.",
+      suggestedAnswer: "An abstract class can have both abstract (unimplemented) and concrete (implemented) methods, and a class can only inherit from one abstract class. An interface can only have abstract methods (in most languages), and a class can implement multiple interfaces. Use an abstract class for a close relationship (is-a), and an interface to define a capability (can-do)."
     }
 ];
 
@@ -59,6 +67,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "How would you optimize a web page for performance?",
         suggestedAnswer: "I'd focus on several areas: minimizing HTTP requests by bundling CSS and JS, compressing assets (like images and code), using browser caching, optimizing the critical rendering path by loading CSS before JS, and using techniques like lazy loading for images and code splitting for JavaScript bundles."
+    },
+    {
+        question: "What are React Hooks, and what problem do they solve?",
+        suggestedAnswer: "React Hooks are functions that let you 'hook into' React state and lifecycle features from function components. They solve the problem of having to write complex class components to manage state or side effects, allowing for cleaner, more reusable, and more composable logic without classes."
+    },
+    {
+        question: "Explain the CSS box model.",
+        suggestedAnswer: "The CSS box model is a box that wraps around every HTML element. It consists of: margins, borders, padding, and the actual content. Understanding it is fundamental for layout and spacing, as it dictates how elements are sized and positioned on the page."
     }
   ],
   "Backend Developer": [
@@ -73,6 +89,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "Describe the request/response lifecycle in a typical web application.",
         suggestedAnswer: "A user's browser sends an HTTP request to a server. A load balancer might route it to a web server, which passes it to the application code. The application processes the request (e.g., queries a database, performs business logic), generates an HTML page or JSON data, and sends it back as an HTTP response. The browser then renders the response for the user."
+    },
+    {
+        question: "What is the purpose of indexing in a database?",
+        suggestedAnswer: "Database indexing is a technique to speed up the retrieval of records from a table. An index is a special lookup table that the database search engine can use to find data quickly, much like an index in a book. While it speeds up read operations (SELECT), it can slow down write operations (INSERT, UPDATE, DELETE) because the index also needs to be updated."
+    },
+    {
+        question: "Explain the concept of idempotency in the context of APIs.",
+        suggestedAnswer: "An idempotent API endpoint is one where making the same request multiple times produces the same result as making it once. For example, a `DELETE` request is idempotent because deleting a resource multiple times has the same effect as deleting it once. This is important for building robust systems, as it allows clients to safely retry requests without causing unintended side effects."
     }
   ],
   "Cybersecurity Analyst": [
@@ -87,6 +111,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "What are the common types of web application vulnerabilities, and how can they be prevented?",
         suggestedAnswer: "Common vulnerabilities include SQL Injection (prevented with parameterized queries), Cross-Site Scripting (XSS) (prevented by sanitizing user input and using Content Security Policy), and Cross-Site Request Forgery (CSRF) (prevented with anti-CSRF tokens). Regular security audits and secure coding practices are essential."
+    },
+    {
+        question: "What is a 'man-in-the-middle' (MITM) attack?",
+        suggestedAnswer: "A man-in-the-middle attack is when an attacker secretly intercepts and relays communication between two parties who believe they are directly communicating with each other. The attacker can eavesdrop on the conversation or even alter the data being transmitted. Using encrypted communication protocols like HTTPS is a primary defense against MITM attacks."
+    },
+    {
+        question: "What is the principle of least privilege, and why is it important?",
+        suggestedAnswer: "The principle of least privilege dictates that a user or system should only have the minimum levels of access—or permissions—necessary to perform its job functions. This is a fundamental security concept because it limits the damage that can be caused by an accident, error, or a compromised account. If an account is breached, the attacker's access is confined to a limited scope."
     }
   ],
   "Product Manager": [
@@ -97,6 +129,10 @@ export const roleBasedQuestions: RoleQuestions = {
     {
       question: "Our user engagement is down 10% month-over-month. How would you investigate this?",
       suggestedAnswer: "Show your analytical process. 'First, I'd work with data analysts to segment the drop: is it affecting all users or a specific cohort? Is it tied to a recent release or a change in marketing? I'd then move to qualitative analysis, like user surveys or interviews, to understand the 'why' behind the data. The goal is to form a hypothesis and then test it.'"
+    },
+    {
+      question: "How do you measure the success of a feature after it's launched?",
+      suggestedAnswer: "I'd define Key Performance Indicators (KPIs) before launch. These could include adoption rate (how many users are using the feature), user satisfaction (measured via surveys or feedback), and impact on business metrics (like conversion rate or revenue). I'd track these KPIs on a dashboard and compare them to our initial goals to determine success."
     }
   ],
   "Data Scientist": [
@@ -107,6 +143,10 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "You're given a dataset with many missing values. How would you handle it?",
         suggestedAnswer: "Discuss various techniques. 'My approach depends on the context. If the missing data is small, I might remove the rows. For numerical data, I could use mean, median, or mode imputation. For more complex cases, I might build a predictive model (like k-NN or a regression) to estimate the missing values based on other features in the dataset.'"
+    },
+    {
+        question: "What is overfitting, and how can you prevent it?",
+        suggestedAnswer: "Overfitting occurs when a machine learning model learns the training data too well, including its noise and random fluctuations, and as a result, it performs poorly on new, unseen data. You can prevent it by using techniques like cross-validation, simplifying the model, using more training data, or applying regularization methods like L1 or L2 to penalize complex models."
     }
   ]
 };
