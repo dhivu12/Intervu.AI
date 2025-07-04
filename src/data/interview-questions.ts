@@ -54,6 +54,10 @@ const softwareEngineerSDEQuestions: Question[] = [
   {
     question: "Describe a situation where you had to make a trade-off between performance and code readability. How did you decide?",
     suggestedAnswer: "In a data processing pipeline, a highly optimized but complex algorithm was faster than a simple, readable one. I chose the readable version initially because the performance gain was negligible for our current data size, and maintainability was more important. I documented the optimized alternative in the code, noting it could be implemented if performance became a bottleneck in the future."
+  },
+  {
+    question: "You need to design a system that processes a high volume of real-time events. What architectural patterns and technologies would you consider?",
+    suggestedAnswer: "I'd consider a stream-processing architecture. I would use a message broker like Apache Kafka to ingest the high-volume events. For processing, I'd use a framework like Apache Flink or Spark Streaming to perform real-time analytics, transformations, or aggregations. The results could then be pushed to a data warehouse, a real-time dashboard, or another service. This pattern decouples ingestion from processing and is highly scalable."
   }
 ];
 
@@ -77,6 +81,10 @@ const fullStackDeveloperQuestions: Question[] = [
   {
     question: "Discuss the pros and cons of using a monolithic architecture versus a microservices architecture for a new project.",
     suggestedAnswer: "A monolith is simpler to develop, test, and deploy initially, making it great for small teams or MVPs. However, it can become tightly coupled and difficult to scale. Microservices offer independent scalability and deployment, and technology flexibility, but they introduce operational complexity, network latency, and challenges with distributed data management."
+  },
+  {
+    question: "What are WebSockets, and when would you use them over traditional HTTP requests?",
+    suggestedAnswer: "WebSockets provide a full-duplex communication channel over a single, long-lived TCP connection. Unlike HTTP, which is a request-response protocol, WebSockets allow the server to push data to the client without the client having to request it. I would use WebSockets for real-time applications like chat apps, live notifications, or collaborative editing tools where low-latency, bidirectional communication is essential."
   }
 ];
 
@@ -100,6 +108,10 @@ const aiMlEngineerQuestions: Question[] = [
   {
     question: "How would you deploy a trained machine learning model as a REST API for real-time inference?",
     suggestedAnswer: "I would containerize the model and the API server (e.g., using Flask or FastAPI) with Docker. This container would include all necessary dependencies. I'd then deploy this container to a cloud service like AWS SageMaker, Google AI Platform, or a Kubernetes cluster. This provides a scalable and isolated environment for the API endpoint."
+  },
+  {
+    question: "Explain what MLOps is and why it's important.",
+    suggestedAnswer: "MLOps is a set of practices that combines Machine Learning, DevOps, and Data Engineering to automate and streamline the end-to-end machine learning lifecycle. It's important because it brings rigor and reliability to ML projects, covering everything from data gathering and model training to deployment and monitoring. It helps ensure that models are reproducible, auditable, and can be updated and deployed efficiently and safely."
   }
 ];
 
@@ -146,6 +158,10 @@ const cloudDevOpsEngineerQuestions: Question[] = [
   {
     question: "Describe a strategy for monitoring a production application for performance and errors.",
     suggestedAnswer: "I'd implement a three-pronged approach: 1. Logging: Aggregate application logs using a service like Datadog or the ELK stack. 2. Metrics: Collect time-series data on system performance (CPU, memory) and application metrics (request latency, error rate) using Prometheus. 3. Tracing: Use a tool like Jaeger or OpenTelemetry to trace requests as they move through different services, helping to pinpoint bottlenecks."
+  },
+  {
+    question: "How would you implement a 'blue-green' deployment strategy?",
+    suggestedAnswer: "In a blue-green deployment, I'd have two identical production environments: 'blue' (the current live version) and 'green' (the new version). I would deploy the new version to the green environment and run tests. Once it's verified, I'd switch the router to direct all traffic to the green environment. The blue environment is kept on standby for a quick rollback if needed. This strategy minimizes downtime and risk."
   }
 ];
 
