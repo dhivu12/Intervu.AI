@@ -58,6 +58,14 @@ const softwareEngineerSDEQuestions: Question[] = [
   {
     question: "You need to design a system that processes a high volume of real-time events. What architectural patterns and technologies would you consider?",
     suggestedAnswer: "I'd consider a stream-processing architecture. I would use a message broker like Apache Kafka to ingest the high-volume events. For processing, I'd use a framework like Apache Flink or Spark Streaming to perform real-time analytics, transformations, or aggregations. The results could then be pushed to a data warehouse, a real-time dashboard, or another service. This pattern decouples ingestion from processing and is highly scalable."
+  },
+  {
+    question: "How would you design a URL shortening service like TinyURL?",
+    suggestedAnswer: "The core is a hash function that converts a long URL to a short, unique key. This key is stored in a distributed database, mapping it back to the original URL. When a user accesses the short URL, the service does a database lookup for the key and redirects them to the original long URL. To handle collisions and generate unique keys, I might use a combination of hashing and a counter."
+  },
+  {
+    question: "Explain the difference between concurrency and parallelism.",
+    suggestedAnswer: "Concurrency is when multiple tasks can run in overlapping time periods, but not necessarily at the same instant (e.g., a single CPU core switching between tasks). Parallelism is when multiple tasks execute simultaneously (e.g., on multiple CPU cores). Concurrency is about dealing with lots of things at once; parallelism is about doing lots of things at once."
   }
 ];
 
@@ -85,6 +93,14 @@ const fullStackDeveloperQuestions: Question[] = [
   {
     question: "What are WebSockets, and when would you use them over traditional HTTP requests?",
     suggestedAnswer: "WebSockets provide a full-duplex communication channel over a single, long-lived TCP connection. Unlike HTTP, which is a request-response protocol, WebSockets allow the server to push data to the client without the client having to request it. I would use WebSockets for real-time applications like chat apps, live notifications, or collaborative editing tools where low-latency, bidirectional communication is essential."
+  },
+  {
+    question: "How would you secure an API endpoint?",
+    suggestedAnswer: "API security is multi-layered. It starts with authentication (e.g., JWT or OAuth 2.0) to verify identity. Then, authorization ensures the user has permission to perform the action. I'd also implement rate limiting to prevent abuse, validate all incoming data to prevent injection attacks, and use HTTPS to encrypt data in transit."
+  },
+  {
+    question: "What is the N+1 query problem and how do you solve it?",
+    suggestedAnswer: "The N+1 query problem occurs when an application makes one query to retrieve a list of items, and then N subsequent queries to fetch related data for each of those items. This is very inefficient. You can solve it by 'eager loading' the related data in the initial query, for example, by using a JOIN in SQL or a feature provided by an ORM."
   }
 ];
 
@@ -112,6 +128,14 @@ const aiMlEngineerQuestions: Question[] = [
   {
     question: "Explain what MLOps is and why it's important.",
     suggestedAnswer: "MLOps is a set of practices that combines Machine Learning, DevOps, and Data Engineering to automate and streamline the end-to-end machine learning lifecycle. It's important because it brings rigor and reliability to ML projects, covering everything from data gathering and model training to deployment and monitoring. It helps ensure that models are reproducible, auditable, and can be updated and deployed efficiently and safely."
+  },
+  {
+    question: "What are some common evaluation metrics for a classification model, and when would you use one over the other?",
+    suggestedAnswer: "Common metrics include Accuracy, Precision, Recall, and F1-Score. Accuracy is good for balanced datasets. For imbalanced datasets, like fraud detection, Precision (how many positive predictions were correct) and Recall (how many actual positives were found) are better. F1-Score is the harmonic mean of Precision and Recall, providing a single metric that balances both."
+  },
+  {
+    question: "Explain the difference between supervised, unsupervised, and reinforcement learning.",
+    suggestedAnswer: "Supervised learning uses labeled data to train a model to make predictions (e.g., classification, regression). Unsupervised learning finds patterns in unlabeled data (e.g., clustering, dimensionality reduction). Reinforcement learning involves an agent learning to make decisions by taking actions in an environment to maximize a cumulative reward (e.g., training a bot to play a game)."
   }
 ];
 
@@ -135,6 +159,14 @@ const mobileAppDeveloperQuestions: Question[] = [
   {
     question: "Explain the importance of platform-specific UI/UX guidelines.",
     suggestedAnswer: "Following Apple's Human Interface Guidelines and Android's Material Design is crucial because users are accustomed to their platform's navigation patterns, controls, and visual language. Adhering to these guidelines makes the app feel intuitive and 'at home' on the device, leading to a better user experience."
+  },
+  {
+    question: "What strategies would you use to handle offline functionality in a mobile app?",
+    suggestedAnswer: "I would use a local database, like SQLite or Realm, to cache data on the device. When the app is offline, it reads from and writes to this local cache. I'd implement a synchronization mechanism that, when the connection is restored, sends pending changes to the server and fetches any new data. This ensures a seamless user experience even with intermittent connectivity."
+  },
+  {
+    question: "Describe the mobile application lifecycle on either iOS or Android.",
+    suggestedAnswer: "On Android, for example, an Activity goes through states like `onCreate()`, `onStart()`, `onResume()` (when it's active), `onPause()` (when another activity comes to the foreground), `onStop()`, and `onDestroy()`. Understanding this lifecycle is critical for managing resources, saving state, and avoiding crashes."
   }
 ];
 
@@ -162,6 +194,14 @@ const cloudDevOpsEngineerQuestions: Question[] = [
   {
     question: "How would you implement a 'blue-green' deployment strategy?",
     suggestedAnswer: "In a blue-green deployment, I'd have two identical production environments: 'blue' (the current live version) and 'green' (the new version). I would deploy the new version to the green environment and run tests. Once it's verified, I'd switch the router to direct all traffic to the green environment. The blue environment is kept on standby for a quick rollback if needed. This strategy minimizes downtime and risk."
+  },
+  {
+    question: "What is the purpose of a service mesh like Istio or Linkerd?",
+    suggestedAnswer: "A service mesh is a dedicated infrastructure layer for managing service-to-service communication in a microservices architecture. It provides features like traffic management (e.g., canary deployments), security (e.g., mutual TLS encryption), and observability (e.g., metrics and tracing) without requiring changes to the application code itself."
+  },
+  {
+    question: "How would you manage secrets (like API keys and database passwords) in your infrastructure?",
+    suggestedAnswer: "Secrets should never be hardcoded in source code or configuration files. I would use a dedicated secrets management tool like HashiCorp Vault or a cloud provider's service (e.g., AWS Secrets Manager). These tools provide centralized storage, fine-grained access control, auditing, and dynamic secret rotation, which is crucial for security."
   }
 ];
 
@@ -185,6 +225,14 @@ const gameArVrDeveloperQuestions: Question[] = [
   {
     question: "Describe the difference between object-oriented programming and data-oriented design in the context of game development.",
     suggestedAnswer: "OOP focuses on creating abstractions with objects and classes. Data-Oriented Design (DOD) focuses on how data is laid out in memory to be processed efficiently by the CPU cache. In games with thousands of objects, DOD can be much more performant because it avoids cache misses by keeping data needed for a specific task contiguous in memory."
+  },
+  {
+    question: "What is a physics engine and what are some key concepts it handles?",
+    suggestedAnswer: "A physics engine is a library that simulates physical systems. It handles concepts like collision detection (detecting when objects touch), collision response (how they react to touching), gravity, and forces. Using a physics engine like PhysX or Box2D saves developers from having to write complex physics code from scratch."
+  },
+  {
+    question: "Explain the rendering pipeline in a modern game engine.",
+    suggestedAnswer: "The rendering pipeline is the sequence of steps the GPU takes to render a 3D scene to a 2D screen. It starts with the application stage (CPU preparing data), then moves to the geometry stage (vertex shading, tessellation), and finally the rasterization stage (pixel shading, depth testing), where the final pixel colors are determined and drawn to the screen."
   }
 ];
 
@@ -208,6 +256,14 @@ const blockchainDeveloperQuestions: Question[] = [
   {
     question: "What are ERC-20 and ERC-721 tokens, and what is the main difference between them?",
     suggestedAnswer: "Both are standards for tokens on the Ethereum blockchain. ERC-20 is a standard for fungible tokens, meaning each token is identical and interchangeable, like currency. ERC-721 is a standard for non-fungible tokens (NFTs), where each token is unique and has a distinct value, like a piece of art or a collectible."
+  },
+  {
+    question: "What is 'gas' in Ethereum and how do you optimize for it?",
+    suggestedAnswer: "Gas is the fee required to conduct a transaction or execute a contract on the Ethereum blockchain. To optimize for gas, you can use efficient data types (e.g., `uint256`), minimize storage writes (which are very expensive), and write clean, simple code. Tools like the Solidity optimizer can also help reduce gas costs."
+  },
+  {
+    question: "What is a Decentralized Autonomous Organization (DAO)?",
+    suggestedAnswer: "A DAO is an organization represented by rules encoded as a computer program that is transparent, controlled by the organization members, and not influenced by a central government. Decisions are made via proposals and voting, and the rules are enforced by smart contracts on the blockchain."
   }
 ];
 
@@ -231,6 +287,14 @@ const uiUxDesignerQuestions: Question[] = [
   {
     question: "Given a design mockup, how would you translate it into a responsive component using HTML and CSS?",
     suggestedAnswer: "First, I'd break the mockup into logical HTML elements with semantic tags. Then, I'd use CSS for styling. For layout, I'd primarily use Flexbox or CSS Grid as they are powerful and flexible. To ensure responsiveness, I'd use relative units like `rem` and `em`, and apply media queries to adjust the layout, font sizes, and spacing for different screen sizes, from mobile to desktop."
+  },
+  {
+    question: "What's the difference between user-centered design and human-centered design?",
+    suggestedAnswer: "They are very similar, but human-centered design is broader. User-centered design focuses specifically on the end-user of a product. Human-centered design considers all humans affected by the system, including non-users and stakeholders, and also takes into account the ethical and societal impact of the design."
+  },
+  {
+    question: "How do you use quantitative and qualitative data in your design process?",
+    suggestedAnswer: "I use quantitative data (like analytics and A/B test results) to understand *what* users are doing at scale. I use qualitative data (like user interviews and usability tests) to understand the *why* behind their actions. Combining both gives a complete picture: the 'what' tells me where the problem is, and the 'why' tells me how to solve it."
   }
 ];
 
@@ -259,6 +323,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "Explain the CSS box model.",
         suggestedAnswer: "The CSS box model is a box that wraps around every HTML element. It consists of: margins, borders, padding, and the actual content. Understanding it is fundamental for layout and spacing, as it dictates how elements are sized and positioned on the page."
+    },
+    {
+        question: "What is the difference between `==` and `===` in JavaScript?",
+        suggestedAnswer: "The `==` operator performs type coercion, meaning it tries to convert the operands to the same type before comparison. The `===` operator (strict equality) does not perform type coercion and returns true only if both the value and the type are the same. It's best practice to always use `===` to avoid unexpected behavior."
+    },
+    {
+        question: "What is a closure in JavaScript? Provide an example.",
+        suggestedAnswer: "A closure is a function that has access to its outer function's scope, even after the outer function has returned. For example: `function outer() { let count = 0; return function inner() { count++; console.log(count); } } const counter = outer(); counter(); // 1, counter(); // 2`. Here, `inner` has a closure over the `count` variable."
     }
   ],
   "Backend Developer": [
@@ -281,6 +353,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "What is a message queue, and what are some use cases for it?",
         suggestedAnswer: "A message queue (like RabbitMQ or Kafka) is a form of asynchronous service-to-service communication. It allows services to communicate without being directly connected. Use cases include: decoupling services, load balancing, and handling long-running background jobs like video processing or sending emails without blocking the main application thread."
+    },
+    {
+        question: "What are the different types of database relationships? Explain one.",
+        suggestedAnswer: "The main types are one-to-one, one-to-many, and many-to-many. A one-to-many relationship is common, like a `User` having many `Posts`. In a SQL database, this is implemented by having a `user_id` foreign key in the `posts` table, linking each post back to the user who created it."
+    },
+    {
+        question: "What is the difference between authentication and authorization?",
+        suggestedAnswer: "Authentication is the process of verifying who a user is (e.g., by checking a username and password). Authorization is the process of verifying what a user is allowed to do (e.g., checking if a user has permission to delete a record). You can't have authorization without authentication."
     }
   ],
   "Cybersecurity Engineer": [
@@ -303,6 +383,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "What is the principle of least privilege, and why is it important?",
         suggestedAnswer: "The principle of least privilege dictates that a user or system should only have the minimum levels of access—or permissions—necessary to perform its job functions. This is a fundamental security concept because it limits the damage that can be caused by an accident, error, or a compromised account. If an account is breached, the attacker's access is confined to a limited scope."
+    },
+    {
+        question: "What is the CIA triad in cybersecurity?",
+        suggestedAnswer: "The CIA triad stands for Confidentiality, Integrity, and Availability. It's a model designed to guide policies for information security. Confidentiality ensures that data is accessible only to authorized users. Integrity ensures that data is accurate and trustworthy. Availability ensures that authorized users can access the data when they need it."
+    },
+    {
+        question: "What is a DDoS attack, and how can it be mitigated?",
+        suggestedAnswer: "A Distributed Denial-of-Service (DDoS) attack is a malicious attempt to disrupt the normal traffic of a targeted server or network by overwhelming it with a flood of internet traffic from multiple sources. Mitigation strategies include using a DDoS protection service (like Cloudflare or AWS Shield), implementing rate limiting, and having a scalable infrastructure that can absorb traffic spikes."
     }
   ],
   "Mobile App Developer": mobileAppDeveloperQuestions,
@@ -327,6 +415,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "How would you explain a p-value to a non-technical stakeholder?",
         suggestedAnswer: "I'd use an analogy. 'Imagine we have a hypothesis, like 'this new website design increases sales.' The p-value is the probability of seeing our results (or even more extreme results) if the new design had *no effect* at all. A small p-value (typically less than 5%) suggests that our results are unlikely to be due to random chance, so we can be more confident that the new design actually works.'"
+    },
+    {
+        question: "What is A/B testing and how would you design an A/B test?",
+        suggestedAnswer: "A/B testing is a method of comparing two versions of a webpage or app against each other to determine which one performs better. To design a test, I would first form a hypothesis (e.g., 'a green button will get more clicks than a blue one'). Then, I'd randomly split users into two groups, showing one group the control (A) and the other the variation (B). I'd run the test until I have a statistically significant result, then analyze the data to see which version won."
+    },
+    {
+        question: "What are some common data visualization libraries you have used, and why would you choose one over another?",
+        suggestedAnswer: "I've used libraries like Matplotlib, Seaborn, and Plotly. I'd use Matplotlib for basic, quick plots. I'd choose Seaborn for more complex statistical plots as it has a simpler API. For interactive dashboards and web-based visualizations, I'd use Plotly because it generates interactive graphs that are great for exploration."
     }
   ],
   "Game Developer / AR/VR Developer": gameArVrDeveloperQuestions,
@@ -344,6 +440,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
       question: "How do you measure the success of a feature after it's launched?",
       suggestedAnswer: "I'd define Key Performance Indicators (KPIs) before launch. These could include adoption rate (how many users are using the feature), user satisfaction (measured via surveys or feedback), and impact on business metrics (like conversion rate or revenue). I'd track these KPIs on a dashboard and compare them to our initial goals to determine success."
+    },
+    {
+      question: "How do you say 'no' to a feature request, for example, from an important stakeholder or a loud customer?",
+      suggestedAnswer: "I never just say 'no.' I listen to the request and seek to understand the underlying problem they are trying to solve. Then, I explain the trade-offs, showing how building their feature would mean de-prioritizing other work that has a higher impact on our overall goals, using data to support my reasoning. I try to find a middle ground, perhaps by suggesting a smaller, simpler solution or adding their problem to our backlog for future consideration."
+    },
+    {
+      question: "What is your favorite product and why? How would you improve it?",
+      suggestedAnswer: "Choose a product you genuinely use and admire. Explain what makes it great from a product perspective (e.g., its clear value proposition, intuitive design, strong user engagement). Then, identify a clear user problem it doesn't solve perfectly and propose a specific, well-reasoned feature improvement. This shows you can think critically about products."
     }
   ]
 };
