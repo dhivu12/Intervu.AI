@@ -27,6 +27,14 @@ const softwareEngineerQuestions: Question[] = [
     {
       question: "Explain the difference between an abstract class and an interface.",
       suggestedAnswer: "An abstract class can have both abstract (unimplemented) and concrete (implemented) methods, and a class can only inherit from one abstract class. An interface can only have abstract methods (in most languages), and a class can implement multiple interfaces. Use an abstract class for a close relationship (is-a), and an interface to define a capability (can-do)."
+    },
+    {
+      question: "Explain the concept of CI/CD and why it's important for a development team.",
+      suggestedAnswer: "CI/CD stands for Continuous Integration and Continuous Deployment/Delivery. CI is the practice of automatically building and testing code every time a developer commits changes to version control. CD is the practice of automatically deploying all code changes to a testing or production environment after the build and test stages. It's important because it helps teams deliver software faster and more reliably by automating the release process and catching bugs early."
+    },
+    {
+      question: "What is containerization, and how does it differ from virtualization?",
+      suggestedAnswer: "Containerization (like Docker) packages an application and its dependencies into a single, isolated unit called a container. Containers run on a shared OS kernel, making them lightweight and fast. Virtualization (like VMware) creates a full virtual machine with its own guest OS, which is much heavier. Containers are ideal for running multiple instances of an application, while VMs are better for running different operating systems on a single server."
     }
 ];
 
@@ -52,6 +60,10 @@ export const roleBasedQuestions: RoleQuestions = {
       question: "Where do you see yourself in five years?",
       suggestedAnswer: "Show ambition that aligns with the company. 'In five years, I hope to have become a subject matter expert in this field and potentially be in a position to mentor junior team members. I'm excited by the growth opportunities at this company and see a long-term future here.'"
     },
+    {
+      question: "Tell me about a time you received difficult feedback. How did you handle it?",
+      suggestedAnswer: "Focus on your receptiveness and growth. 'In a code review, a senior developer pointed out that my approach was inefficient. Initially, I was a bit defensive, but I took a step back and asked them to walk me through their suggestion. I realized they were right, and their approach was much better. I thanked them for the feedback and have used that pattern ever since. It taught me to see feedback as a gift for improvement, not a criticism.'"
+    }
   ],
   "Software Engineer": softwareEngineerQuestions,
   "Software Developer": softwareEngineerQuestions,
@@ -75,6 +87,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "Explain the CSS box model.",
         suggestedAnswer: "The CSS box model is a box that wraps around every HTML element. It consists of: margins, borders, padding, and the actual content. Understanding it is fundamental for layout and spacing, as it dictates how elements are sized and positioned on the page."
+    },
+    {
+        question: "What is web accessibility (a11y), and why is it important?",
+        suggestedAnswer: "Web accessibility, or a11y, is the practice of ensuring that websites and applications are usable by everyone, including people with disabilities. This is important not only for ethical reasons but also because it can improve SEO and reach a wider audience. Key practices include using semantic HTML, providing alt text for images, ensuring keyboard navigability, and maintaining sufficient color contrast."
+    },
+    {
+        question: "When would you use a state management library like Redux or Zustand instead of just React's built-in state management?",
+        suggestedAnswer: "I'd reach for a global state management library when multiple, non-related components need to share and update the same state. While React's Context API can handle this, libraries like Redux or Zustand offer more powerful developer tools, middleware for handling side effects, and more optimized performance for complex, large-scale applications where state is frequently updated from many different places."
     }
   ],
   "Backend Developer": [
@@ -97,6 +117,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "Explain the concept of idempotency in the context of APIs.",
         suggestedAnswer: "An idempotent API endpoint is one where making the same request multiple times produces the same result as making it once. For example, a `DELETE` request is idempotent because deleting a resource multiple times has the same effect as deleting it once. This is important for building robust systems, as it allows clients to safely retry requests without causing unintended side effects."
+    },
+    {
+        question: "Describe a few common caching strategies.",
+        suggestedAnswer: "Common caching strategies include: 1. Cache-Aside: The application code is responsible for checking the cache first, and if it's a miss, it queries the database and then populates the cache. 2. Read-Through: The cache library itself handles the logic of fetching from the database on a cache miss. 3. Write-Through: Data is written to the cache and the database at the same time, ensuring consistency but adding latency to write operations. The best strategy depends on the application's read/write patterns."
+    },
+    {
+        question: "What is a message queue, and what are some use cases for it?",
+        suggestedAnswer: "A message queue (like RabbitMQ or Kafka) is a form of asynchronous service-to-service communication. It allows services to communicate without being directly connected. Use cases include: decoupling services so that the failure of one doesn't impact others, load balancing by distributing tasks among multiple workers, and handling long-running background jobs like video processing or sending emails without blocking the main application thread."
     }
   ],
   "Cybersecurity Analyst": [
@@ -119,6 +147,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "What is the principle of least privilege, and why is it important?",
         suggestedAnswer: "The principle of least privilege dictates that a user or system should only have the minimum levels of access—or permissions—necessary to perform its job functions. This is a fundamental security concept because it limits the damage that can be caused by an accident, error, or a compromised account. If an account is breached, the attacker's access is confined to a limited scope."
+    },
+    {
+        question: "What is a SIEM, and what are its primary functions?",
+        suggestedAnswer: "SIEM stands for Security Information and Event Management. It's a tool that aggregates log data from various sources across a network, analyzes it for security threats, and generates alerts. Its primary functions are to provide real-time analysis of security alerts, help with incident response, and generate reports for compliance purposes."
+    },
+    {
+        question: "How would you educate employees to recognize and avoid phishing attacks?",
+        suggestedAnswer: "I would implement a multi-layered training program. This would include regular, mandatory training sessions on identifying phishing red flags (like suspicious sender addresses, urgent language, and unexpected attachments). I'd also run simulated phishing campaigns to test employees' awareness and provide immediate feedback. Finally, I'd establish a clear process for employees to report suspected phishing emails to the security team."
     }
   ],
   "Product Manager": [
@@ -133,6 +169,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
       question: "How do you measure the success of a feature after it's launched?",
       suggestedAnswer: "I'd define Key Performance Indicators (KPIs) before launch. These could include adoption rate (how many users are using the feature), user satisfaction (measured via surveys or feedback), and impact on business metrics (like conversion rate or revenue). I'd track these KPIs on a dashboard and compare them to our initial goals to determine success."
+    },
+    {
+      question: "How do you balance building new features with paying down technical debt?",
+      suggestedAnswer: "I view technical debt as a product concern, not just an engineering one. I work with the engineering lead to understand the impact of the debt and quantify its cost (e.g., slower development, increased bugs). I then advocate for allocating a percentage of each sprint—say, 15-20%—to addressing tech debt, framing it as an investment in future velocity and product quality. This ensures we're not just building a 'feature factory' but a sustainable product."
+    },
+    {
+      question: "What is the role of user personas in product development?",
+      suggestedAnswer: "User personas are fictional characters created to represent the different user types that might use a product. They are crucial because they help the entire team (designers, developers, marketers) build empathy for the users. Personas guide design decisions, help prioritize features based on user needs, and ensure we're building a product for a real person with real problems, not just for ourselves."
     }
   ],
   "Data Scientist": [
@@ -147,6 +191,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "What is overfitting, and how can you prevent it?",
         suggestedAnswer: "Overfitting occurs when a machine learning model learns the training data too well, including its noise and random fluctuations, and as a result, it performs poorly on new, unseen data. You can prevent it by using techniques like cross-validation, simplifying the model, using more training data, or applying regularization methods like L1 or L2 to penalize complex models."
+    },
+    {
+        question: "What is feature engineering, and why is it important in machine learning?",
+        suggestedAnswer: "Feature engineering is the process of using domain knowledge to create new input variables (features) from the raw data to improve the performance of a machine learning model. It's crucial because even the best model can't perform well with poor features. Examples include creating interaction terms, extracting components from a date, or using one-hot encoding for categorical variables."
+    },
+    {
+        question: "How can you detect and mitigate bias in a machine learning model?",
+        suggestedAnswer: "Detecting bias involves auditing the model's predictions across different demographic groups to see if there are significant performance disparities. Mitigation strategies include: 1. Pre-processing: Resampling the training data to be more balanced. 2. In-processing: Adding constraints to the model during training to reduce its reliance on sensitive attributes. 3. Post-processing: Adjusting the model's prediction thresholds for different groups to achieve fairness."
     }
   ]
 };
