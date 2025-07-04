@@ -9,32 +9,47 @@ export type RoleQuestions = {
 
 const softwareEngineerQuestions: Question[] = [
     {
+      question: "How would you design a scalable system for a service like Instagram?",
+      suggestedAnswer: "Discuss high-level components. 'I'd start with a load balancer distributing requests to web servers. These servers would handle user authentication and API requests. For the feed, I'd use a fan-out-on-write approach where, upon upload, a photo is pushed to the feeds of all followers. This would be managed by a message queue and worker services. We'd use a distributed database for photo metadata and a CDN for image storage and delivery to ensure low latency.'"
+    },
+    {
+      question: "Explain the concept of CI/CD and why it's important for a development team.",
+      suggestedAnswer: "CI/CD stands for Continuous Integration and Continuous Deployment/Delivery. CI is the practice of automatically building and testing code every time a developer commits changes. CD is the practice of automatically deploying all code changes to a testing or production environment. It's crucial because it automates the release process, catches bugs early, and allows teams to deliver value to users faster and more reliably."
+    },
+    {
+      question: "What is containerization (e.g., Docker), and how does it differ from virtualization (e.g., VMware)?",
+      suggestedAnswer: "Containerization packages an application and its dependencies into a single, isolated unit that runs on a shared OS kernel, making it lightweight and fast. Virtualization creates a full virtual machine with its own guest OS, which is much heavier. I'd use containers for deploying microservices or ensuring consistent environments, and VMs for running different operating systems on a single server or for legacy applications."
+    },
+    {
+      question: "What are the trade-offs between monolithic and microservices architectures?",
+      suggestedAnswer: "A monolith is simpler to develop and deploy initially but can become complex and slow to change as it grows. Microservices offer independent scalability and deployment, and allow for technology diversity, but they introduce operational complexity, network latency, and challenges with data consistency across services. The choice depends on the team's size, the complexity of the application, and scalability requirements."
+    },
+    {
+      question: "Explain the CAP theorem and how it applies to distributed systems.",
+      suggestedAnswer: "The CAP theorem states that a distributed database can only provide two of the following three guarantees: Consistency (every read receives the most recent write), Availability (every request receives a response), and Partition Tolerance (the system continues to operate despite network partitions). In modern distributed systems, partition tolerance is a must, so designers must choose between consistency (CP systems like Google's Bigtable) and availability (AP systems like Amazon's DynamoDB)."
+    }
+];
+
+const softwareDeveloperQuestions: Question[] = [
+    {
       question: "Describe the most challenging bug you've ever fixed.",
       suggestedAnswer: "Explain the bug's complexity, your debugging process, and what you learned. 'I once chased a memory leak in a Node.js service that only occurred under heavy load. I used heap dumps and memory profiling tools to trace it back to a third-party library's event listener that wasn't being properly garbage collected. I submitted a patch to the library and implemented a temporary workaround, preventing service crashes and teaching me a lot about memory management.'"
     },
     {
-      question: "How would you design a simple URL shortening service like TinyURL?",
-      suggestedAnswer: "Discuss system design concepts. 'I'd start with a simple key-value store. The user provides a long URL, the system generates a unique short key (e.g., a 6-character alphanumeric string), and stores the mapping. When a user hits the short URL, the service does a lookup and redirects them. For scalability, I'd consider a distributed database, a load balancer, and a robust algorithm for generating non-colliding short keys, perhaps using a base-62 encoding of a unique counter.'"
-    },
-    {
-      question: "What's the difference between REST and GraphQL? When would you use one over the other?",
-      suggestedAnswer: "Explain the core concepts. 'REST is an architectural style with fixed endpoints, while GraphQL is a query language that allows clients to request exactly the data they need. I'd use REST for simple, well-defined APIs. I'd choose GraphQL for complex applications with nested data or mobile apps where minimizing data transfer is critical, as it avoids over-fetching.'"
-    },
-    {
-      question: "What is Big O notation, and why is it important?",
-      suggestedAnswer: "Big O notation is used to describe the performance or complexity of an algorithm. It characterizes the worst-case scenario, focusing on how the execution time or space requirements grow as the input size increases. It's crucial for choosing efficient algorithms, especially when working with large datasets, to avoid performance bottlenecks."
+      question: "What is Big O notation, and why is it important for a developer?",
+      suggestedAnswer: "Big O notation describes the performance or complexity of an algorithm in the worst-case scenario. It's crucial for developers to understand because it helps in choosing efficient algorithms that scale well with large amounts of data, directly impacting the application's performance and user experience."
     },
     {
       question: "Explain the difference between an abstract class and an interface.",
-      suggestedAnswer: "An abstract class can have both abstract (unimplemented) and concrete (implemented) methods, and a class can only inherit from one abstract class. An interface can only have abstract methods (in most languages), and a class can implement multiple interfaces. Use an abstract class for a close relationship (is-a), and an interface to define a capability (can-do)."
+      suggestedAnswer: "An abstract class can have both implemented and unimplemented methods, and a class can only inherit from one abstract class. An interface can only have method signatures (no implementation), and a class can implement multiple interfaces. Use an abstract class for a strong 'is-a' relationship, and an interface to define a 'can-do' capability."
     },
     {
-      question: "Explain the concept of CI/CD and why it's important for a development team.",
-      suggestedAnswer: "CI/CD stands for Continuous Integration and Continuous Deployment/Delivery. CI is the practice of automatically building and testing code every time a developer commits changes to version control. CD is the practice of automatically deploying all code changes to a testing or production environment after the build and test stages. It's important because it helps teams deliver software faster and more reliably by automating the release process and catching bugs early."
+      question: "How do you approach code reviews? What are the key things you look for?",
+      suggestedAnswer: "I approach code reviews collaboratively, aiming to improve the code, not criticize the author. I look for correctness (does it do what it's supposed to?), readability and maintainability, potential bugs or edge cases, and adherence to our team's coding standards. I always provide constructive suggestions and explain the 'why' behind my comments."
     },
     {
-      question: "What is containerization, and how does it differ from virtualization?",
-      suggestedAnswer: "Containerization (like Docker) packages an application and its dependencies into a single, isolated unit called a container. Containers run on a shared OS kernel, making them lightweight and fast. Virtualization (like VMware) creates a full virtual machine with its own guest OS, which is much heavier. Containers are ideal for running multiple instances of an application, while VMs are better for running different operating systems on a single server."
+      question: "Explain the difference between `git merge` and `git rebase`.",
+      suggestedAnswer: "`git merge` creates a new 'merge commit' in the history, tying together the histories of two branches. It's non-destructive. `git rebase` moves the entire feature branch to begin on the tip of the main branch, rewriting the project history and creating a cleaner, linear sequence of commits. I use merge for public branches and rebase for my local feature branches to keep the history clean before merging."
     }
 ];
 
@@ -66,7 +81,7 @@ export const roleBasedQuestions: RoleQuestions = {
     }
   ],
   "Software Engineer": softwareEngineerQuestions,
-  "Software Developer": softwareEngineerQuestions,
+  "Software Developer": softwareDeveloperQuestions,
   "Frontend Developer": [
     {
         question: "What is the difference between `let`, `const`, and `var` in JavaScript?",
@@ -103,8 +118,8 @@ export const roleBasedQuestions: RoleQuestions = {
         suggestedAnswer: "SQL databases are relational, with structured data and a predefined schema (e.g., PostgreSQL, MySQL). NoSQL databases are non-relational and have dynamic schemas for unstructured data (e.g., MongoDB, Cassandra). I'd choose SQL for applications requiring complex queries and data integrity, like an e-commerce site. I'd use NoSQL for applications with large amounts of data and flexible schema needs, like a social media feed or IoT application."
     },
     {
-        question: "What are microservices, and what are their pros and cons compared to a monolithic architecture?",
-        suggestedAnswer: "Microservices is an architectural style that structures an application as a collection of loosely coupled services. Pros include independent deployment, technology diversity, and improved scalability. Cons can include complexity in management, network latency, and challenges with data consistency across services. A monolith is simpler to start with but can become difficult to scale and maintain."
+        question: "What's the difference between REST and GraphQL? When would you use one over the other?",
+        suggestedAnswer: "Explain the core concepts. 'REST is an architectural style with fixed endpoints, while GraphQL is a query language that allows clients to request exactly the data they need. I'd use REST for simple, well-defined APIs. I'd choose GraphQL for complex applications with nested data or mobile apps where minimizing data transfer is critical, as it avoids over-fetching.'"
     },
     {
         question: "Describe the request/response lifecycle in a typical web application.",
