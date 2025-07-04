@@ -19,25 +19,43 @@ const initialMessages: Message[] = [
   },
 ];
 
-const analyzeSentiment = (text: string): Sentiment => {
-  const positiveKeywords = ['achieved', 'success', 'proud', 'led', 'improved', 'created', 'resolved', 'efficiently', 'effectively', 'completed', 'launched', 'drove', 'spearheaded', 'mentored'];
-  const negativeKeywords = ['failed', 'problem', 'difficult', "couldn't", 'struggled', 'issue', 'bad', 'never', 'mistake', 'unable'];
+const getFeedbackForAnswer = (userAnswer: string, question: Question): { feedback: string, sentiment: Sentiment } => {
+    const lowerAnswer = userAnswer.toLowerCase();
+    const answerWords = lowerAnswer.split(/\s+/);
 
-  const lowerText = text.toLowerCase();
-  let score = 0;
+    const positiveKeywords = ['achieved', 'success', 'proud', 'led', 'improved', 'created', 'resolved', 'efficiently', 'effectively', 'completed', 'launched', 'drove', 'spearheaded', 'mentored', 'resulted in', 'increased by', 'decreased by'];
+    const negativeKeywords = ['failed', 'problem', 'difficult', "couldn't", 'struggled', 'issue', 'bad', 'never', 'mistake', 'unable'];
+    
+    let sentiment: Sentiment = "Neutral";
+    let positiveCount = positiveKeywords.filter(kw => lowerAnswer.includes(kw)).length;
+    let negativeCount = negativeKeywords.filter(kw => lowerAnswer.includes(kw)).length;
 
-  positiveKeywords.forEach(word => {
-    if (lowerText.includes(word)) score++;
-  });
+    if (positiveCount > 0 && positiveCount > negativeCount) {
+        sentiment = "Positive";
+    } else if (negativeCount > positiveCount) {
+        sentiment = "Negative";
+    }
 
-  negativeKeywords.forEach(word => {
-    if (lowerText.includes(word)) score--;
-  });
+    if (answerWords.length < 20) {
+        sentiment = "Negative";
+        return {
+            sentiment,
+            feedback: `Your answer is a bit brief. A great answer provides context (the situation), describes what you did (the action), and explains the outcome (the result). Try to elaborate more.\n\nHere's an example of a more detailed response:\n"${question.suggestedAnswer}"`
+        };
+    }
 
-  if (score > 0) return "Positive";
-  if (score < 0) return "Negative";
-  return "Neutral";
-}
+    if (sentiment === "Positive") {
+        return {
+            sentiment,
+            feedback: "Excellent answer! It was detailed, confident, and clearly highlighted your skills and achievements. Well done."
+        };
+    }
+
+    return {
+        sentiment,
+        feedback: `That's a solid start. To make your answer more compelling, focus on the specific actions you took and the positive results you achieved. Quantifying your impact with numbers or metrics can be very powerful.\n\nFor reference, here's a model answer that shows this in practice:\n"${question.suggestedAnswer}"`
+    };
+};
 
 interface ChatWindowProps {
   setActiveSentiment: (sentiment: Sentiment) => void;
@@ -114,23 +132,16 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
             newMessages.push({ text: "It seems I'm out of questions! The interview is complete.", sender: "ai" });
             setInterviewState('finished');
         }
-      } else if (interviewState === 'in_progress') {
-        const sentiment = analyzeSentiment(currentInput);
+      } else if (interviewState === 'in_progress' && currentQuestion) {
+        const { feedback, sentiment } = getFeedbackForAnswer(currentInput, currentQuestion);
         setActiveSentiment(sentiment);
-
-        if (sentiment === 'Positive') {
-            newMessages.push({ text: "That's a strong, detailed answer. Well done.", sender: "ai" });
-        } else if (sentiment === 'Negative' && currentQuestion) {
-            newMessages.push({ text: `Thanks for your answer. For future reference, here's a way you could frame that response more strongly:\n\n"${currentQuestion.suggestedAnswer}"`, sender: "ai" });
-        } else if (sentiment === 'Neutral') {
-             newMessages.push({ text: "That's a solid answer. To make it even stronger, try to include specific results or metrics to quantify your impact.", sender: "ai" });
-        }
+        newMessages.push({ text: feedback, sender: "ai" });
 
         if (availableQuestions.length > 0) {
             const nextQuestion = availableQuestions[0];
             setCurrentQuestion(nextQuestion);
             setAvailableQuestions(availableQuestions.slice(1));
-            newMessages.push({ text: nextQuestion.question, sender: "ai" });
+            newMessages.push({ text: `\nLet's move on. ${nextQuestion.question}`, sender: "ai" });
         } else {
             newMessages.push({ text: "That was the last question. Thank you for your time! The interview is now complete.", sender: "ai" });
             setInterviewState('finished');
