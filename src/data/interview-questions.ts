@@ -66,6 +66,14 @@ const softwareEngineerSDEQuestions: Question[] = [
   {
     question: "Explain the difference between concurrency and parallelism.",
     suggestedAnswer: "Concurrency is when multiple tasks can run in overlapping time periods, but not necessarily at the same instant (e.g., a single CPU core switching between tasks). Parallelism is when multiple tasks execute simultaneously (e.g., on multiple CPU cores). Concurrency is about dealing with lots of things at once; parallelism is about doing lots of things at once."
+  },
+  {
+    question: "You are given a string. Find the length of the longest substring without repeating characters. Explain your algorithmic approach and its time complexity.",
+    suggestedAnswer: "I would use the 'sliding window' technique. I'd have two pointers, `start` and `end`, and a hash set to store characters in the current window. I'd expand the window by moving `end`. If a character is already in the set, I'd shrink the window from the `start` until the duplicate is removed. The time complexity is O(n) because each character is visited at most twice."
+  },
+  {
+    question: "How would you design a distributed key-value store like Amazon's DynamoDB? Discuss partitioning, replication, and consistency.",
+    suggestedAnswer: "I'd use consistent hashing to partition the data across nodes. Each node would be replicated to several other nodes for fault tolerance. For consistency, I'd use a tunable model, like eventual consistency for high availability, but also offer strongly consistent reads at a higher latency cost. I'd use a mechanism like vector clocks to handle conflicting writes."
   }
 ];
 
@@ -101,6 +109,14 @@ const fullStackDeveloperQuestions: Question[] = [
   {
     question: "What is the N+1 query problem and how do you solve it?",
     suggestedAnswer: "The N+1 query problem occurs when an application makes one query to retrieve a list of items, and then N subsequent queries to fetch related data for each of those items. This is very inefficient. You can solve it by 'eager loading' the related data in the initial query, for example, by using a JOIN in SQL or a feature provided by an ORM."
+  },
+  {
+    question: "How would you implement JWT-based authentication in a MERN stack application, ensuring secure token storage on the client-side?",
+    suggestedAnswer: "On the backend (Node/Express), I'd create login/register endpoints. Upon successful login, I'd generate a JWT and an HTTP-only refresh token. The JWT is sent to the client to be stored in memory (e.g., React state), while the refresh token is stored in a secure, HTTP-only cookie. The JWT is used for authenticating API requests. If it expires, the client can use the refresh token to get a new JWT without forcing the user to log in again."
+  },
+  {
+    question: "What is Server-Side Rendering (SSR) and how does it differ from Static Site Generation (SSG) in a framework like Next.js?",
+    suggestedAnswer: "SSR generates the HTML for a page on the server in response to each request. This is great for pages with dynamic, user-specific content. SSG generates the HTML at build time, so a static file is served for every request, which is extremely fast. SSG is ideal for content that doesn't change often, like a blog post or marketing page."
   }
 ];
 
@@ -136,6 +152,14 @@ const aiMlEngineerQuestions: Question[] = [
   {
     question: "Explain the difference between supervised, unsupervised, and reinforcement learning.",
     suggestedAnswer: "Supervised learning uses labeled data to train a model to make predictions (e.g., classification, regression). Unsupervised learning finds patterns in unlabeled data (e.g., clustering, dimensionality reduction). Reinforcement learning involves an agent learning to make decisions by taking actions in an environment to maximize a cumulative reward (e.g., training a bot to play a game)."
+  },
+  {
+    question: "Explain the architecture of a Convolutional Neural Network (CNN). What are its key layers and what do they do?",
+    suggestedAnswer: "A CNN typically consists of convolutional layers, pooling layers, and fully-connected layers. Convolutional layers apply filters to the input image to create feature maps. Pooling layers (like MaxPooling) downsample the feature maps to reduce dimensionality. Finally, fully-connected layers perform classification based on the high-level features extracted by the previous layers."
+  },
+  {
+    question: "What is transfer learning and how would you apply it to an image classification task using a pre-trained model from TensorFlow Hub or PyTorch Hub?",
+    suggestedAnswer: "Transfer learning is a technique where a model developed for a task is reused as the starting point for a model on a second task. I would load a pre-trained model (like MobileNetV2), freeze the convolutional base to preserve its learned features, and then add my own new classifier layers on top. I would then train only these new layers on my specific dataset, which is much faster and requires less data than training from scratch."
   }
 ];
 
@@ -167,6 +191,14 @@ const mobileAppDeveloperQuestions: Question[] = [
   {
     question: "Describe the mobile application lifecycle on either iOS or Android.",
     suggestedAnswer: "On Android, for example, an Activity goes through states like `onCreate()`, `onStart()`, `onResume()` (when it's active), `onPause()` (when another activity comes to the foreground), `onStop()`, and `onDestroy()`. Understanding this lifecycle is critical for managing resources, saving state, and avoiding crashes."
+  },
+  {
+    question: "Explain the difference between `Activity` and `Fragment` in Android development. How do they manage their lifecycles?",
+    suggestedAnswer: "An `Activity` is a single, focused thing that the user can do, essentially a screen. A `Fragment` is a modular section of an activity, with its own lifecycle that is tied to the host activity's lifecycle. You can combine multiple fragments in a single activity to build a multi-pane UI and reuse a fragment in multiple activities."
+  },
+  {
+    question: "In Flutter, what is the difference between a `StatelessWidget` and a `StatefulWidget`? Describe how state is managed in a `StatefulWidget`.",
+    suggestedAnswer: "A `StatelessWidget` is immutable; its properties cannot change over time. A `StatefulWidget` can maintain state that might change during the widget's lifetime. State is managed in a separate `State` object. When the internal state changes (e.g., via a call to `setState()`), the framework is prompted to rebuild the widget to reflect the new state."
   }
 ];
 
@@ -202,6 +234,14 @@ const cloudDevOpsEngineerQuestions: Question[] = [
   {
     question: "How would you manage secrets (like API keys and database passwords) in your infrastructure?",
     suggestedAnswer: "Secrets should never be hardcoded in source code or configuration files. I would use a dedicated secrets management tool like HashiCorp Vault or a cloud provider's service (e.g., AWS Secrets Manager). These tools provide centralized storage, fine-grained access control, auditing, and dynamic secret rotation, which is crucial for security."
+  },
+  {
+    question: "In Terraform, what is the difference between a 'resource' and a 'data source'? Provide an example of when you would use each.",
+    suggestedAnswer: "A `resource` block in Terraform declares a piece of infrastructure to be created or managed (e.g., an AWS EC2 instance). A `data source` block allows you to fetch information about an existing resource for use elsewhere in your configuration. For example, you'd use a data source to get the ID of a pre-existing VPC to launch a new EC2 instance into it."
+  },
+  {
+    question: "Describe the components of a Kubernetes control plane (e.g., etcd, kube-apiserver, kube-scheduler). What is the role of each?",
+    suggestedAnswer: "The `kube-apiserver` exposes the Kubernetes API. `etcd` is a key-value store for all cluster data. The `kube-scheduler` watches for newly created pods and assigns them to nodes. The `kube-controller-manager` runs controller processes. These components work together to manage the state of the cluster."
   }
 ];
 
@@ -233,6 +273,14 @@ const gameArVrDeveloperQuestions: Question[] = [
   {
     question: "Explain the rendering pipeline in a modern game engine.",
     suggestedAnswer: "The rendering pipeline is the sequence of steps the GPU takes to render a 3D scene to a 2D screen. It starts with the application stage (CPU preparing data), then moves to the geometry stage (vertex shading, tessellation), and finally the rasterization stage (pixel shading, depth testing), where the final pixel colors are determined and drawn to the screen."
+  },
+  {
+    question: "In Unity, what is the difference between `Update()`, `FixedUpdate()`, and `LateUpdate()`? When should each be used?",
+    suggestedAnswer: "`Update()` is called once per frame and is used for most game logic. `FixedUpdate()` is called at a fixed time interval and is used for physics calculations to ensure consistency. `LateUpdate()` is called once per frame after all `Update()` functions have been called, which is useful for things like a camera that needs to track an object after it has moved."
+  },
+  {
+    question: "Explain how a quaternion is used to represent rotations in 3D space and why it's often preferred over Euler angles.",
+    suggestedAnswer: "A quaternion uses four numbers to represent a rotation in 3D space. They are preferred over Euler angles (pitch, yaw, roll) because they avoid the problem of 'gimbal lock,' where two axes can become aligned, causing a loss of one degree of rotational freedom. Quaternions also make interpolating between rotations smoother."
   }
 ];
 
@@ -264,6 +312,14 @@ const blockchainDeveloperQuestions: Question[] = [
   {
     question: "What is a Decentralized Autonomous Organization (DAO)?",
     suggestedAnswer: "A DAO is an organization represented by rules encoded as a computer program that is transparent, controlled by the organization members, and not influenced by a central government. Decisions are made via proposals and voting, and the rules are enforced by smart contracts on the blockchain."
+  },
+  {
+    question: "Explain the role of an oracle in a blockchain ecosystem. Why are they necessary for smart contracts?",
+    suggestedAnswer: "Smart contracts cannot access off-chain data (data outside the blockchain) on their own. An oracle is a service that acts as a bridge, finding and verifying real-world data and submitting it to the blockchain to be used by smart contracts. They are necessary for contracts that depend on external information, like weather data or price feeds."
+  },
+  {
+    question: "How would you use Hardhat or Truffle to compile, deploy, and test a simple Solidity smart contract?",
+    suggestedAnswer: "I would set up a project, write my Solidity contract in the `contracts` folder, and create a deployment script in the `scripts` folder. I'd configure my network settings (e.g., for a local testnet or a public testnet like Sepolia). Then I would run `npx hardhat compile`, `npx hardhat run scripts/deploy.js`, and write tests using Chai and Mocha in the `test` folder, which can be run with `npx hardhat test`."
   }
 ];
 
@@ -295,6 +351,14 @@ const uiUxDesignerQuestions: Question[] = [
   {
     question: "How do you use quantitative and qualitative data in your design process?",
     suggestedAnswer: "I use quantitative data (like analytics and A/B test results) to understand *what* users are doing at scale. I use qualitative data (like user interviews and usability tests) to understand the *why* behind their actions. Combining both gives a complete picture: the 'what' tells me where the problem is, and the 'why' tells me how to solve it."
+  },
+  {
+    question: "How do you use auto layout and variants in Figma to create a responsive and reusable button component?",
+    suggestedAnswer: "I'd create a frame for the button, add text and icon layers inside, and apply auto layout to manage spacing and padding. This makes the button resize automatically with its content. Then, I'd turn this into a component and create variants for different states (e.g., default, hover, disabled) and styles (e.g., primary, secondary), allowing me to switch between them easily across my designs."
+  },
+  {
+    question: "What is Storybook, and how can it help bridge the gap between design and development in a component-based project?",
+    suggestedAnswer: "Storybook is a tool for developing UI components in isolation. It allows designers and developers to see all the states and variants of a component without having to run the full application. This creates a shared language and ensures the final coded component perfectly matches the design intent, reducing inconsistencies."
   }
 ];
 
@@ -331,6 +395,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "What is a closure in JavaScript? Provide an example.",
         suggestedAnswer: "A closure is a function that has access to its outer function's scope, even after the outer function has returned. For example: `function outer() { let count = 0; return function inner() { count++; console.log(count); } } const counter = outer(); counter(); // 1, counter(); // 2`. Here, `inner` has a closure over the `count` variable."
+    },
+    {
+        question: "What is code splitting and how would you implement it in a React application using a tool like Webpack or Vite?",
+        suggestedAnswer: "Code splitting is the process of breaking up your application's bundle into smaller chunks that can be loaded on demand. In React, I'd use `React.lazy()` to dynamically import components. This, combined with a bundler like Vite or Webpack, will automatically create separate files for these components, which are only fetched when they are first rendered."
+    },
+    {
+        question: "Explain the difference between Redux and React's Context API for state management. When would you choose one over the other?",
+        suggestedAnswer: "Context API is great for passing state down through a component tree without prop drilling, but it can cause performance issues if the state updates frequently, as it re-renders all consuming components. Redux is a more robust solution with a centralized store, middleware for side effects, and performance optimizations. I'd use Context for simple, low-frequency state (like theme) and Redux for complex, high-frequency global state."
     }
   ],
   "Backend Developer": [
@@ -361,6 +433,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "What is the difference between authentication and authorization?",
         suggestedAnswer: "Authentication is the process of verifying who a user is (e.g., by checking a username and password). Authorization is the process of verifying what a user is allowed to do (e.g., checking if a user has permission to delete a record). You can't have authorization without authentication."
+    },
+    {
+        question: "What is the difference between REST and GraphQL? Describe a scenario where GraphQL would be a better choice.",
+        suggestedAnswer: "REST uses multiple endpoints to fetch fixed data structures, while GraphQL uses a single endpoint where the client can request exactly the data it needs. GraphQL is a better choice for applications with complex data requirements or mobile apps where minimizing payload size is critical, as it avoids over-fetching and under-fetching of data."
+    },
+    {
+        question: "How does connection pooling work in a database, and why is it important for a high-traffic application?",
+        suggestedAnswer: "Connection pooling maintains a cache of database connections that can be reused for future requests. Establishing a database connection is an expensive operation. In a high-traffic application, creating a new connection for every request would be very slow and resource-intensive. Connection pooling significantly improves performance by reusing existing connections."
     }
   ],
   "Cybersecurity Engineer": [
@@ -391,6 +471,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "What is a DDoS attack, and how can it be mitigated?",
         suggestedAnswer: "A Distributed Denial-of-Service (DDoS) attack is a malicious attempt to disrupt the normal traffic of a targeted server or network by overwhelming it with a flood of internet traffic from multiple sources. Mitigation strategies include using a DDoS protection service (like Cloudflare or AWS Shield), implementing rate limiting, and having a scalable infrastructure that can absorb traffic spikes."
+    },
+    {
+        question: "What is the OWASP Top 10? Name three vulnerabilities from the list and explain how to mitigate them.",
+        suggestedAnswer: "The OWASP Top 10 is a standard awareness document for web application security. Three examples are: 1. Injection (like SQL injection), mitigated by using parameterized queries. 2. Broken Authentication, mitigated by implementing multi-factor authentication and strong password policies. 3. Security Misconfiguration, mitigated by hardening systems and removing default accounts or passwords."
+    },
+    {
+        question: "Explain the concept of a Security Information and Event Management (SIEM) system and its role in a Security Operations Center (SOC).",
+        suggestedAnswer: "A SIEM system aggregates log data from various sources across a network, analyzes it in real-time to identify potential security threats, and generates alerts. In a SOC, analysts use the SIEM as their primary tool to monitor for incidents, investigate alerts, and respond to threats, providing a centralized view of the organization's security posture."
     }
   ],
   "Mobile App Developer": mobileAppDeveloperQuestions,
@@ -423,6 +511,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "What are some common data visualization libraries you have used, and why would you choose one over another?",
         suggestedAnswer: "I've used libraries like Matplotlib, Seaborn, and Plotly. I'd use Matplotlib for basic, quick plots. I'd choose Seaborn for more complex statistical plots as it has a simpler API. For interactive dashboards and web-based visualizations, I'd use Plotly because it generates interactive graphs that are great for exploration."
+    },
+    {
+        question: "Write a SQL query to find the second-highest salary from an `employees` table. Explain your logic.",
+        suggestedAnswer: "One way is to use a subquery: `SELECT MAX(salary) FROM employees WHERE salary < (SELECT MAX(salary) FROM employees);`. Another common method is using `LIMIT` and `OFFSET`: `SELECT salary FROM employees ORDER BY salary DESC LIMIT 1 OFFSET 1;`. The second approach is often more readable and performant."
+    },
+    {
+        question: "Using the Pandas library in Python, how would you clean a dataset by removing duplicate rows and filling missing numerical values with the column's median?",
+        suggestedAnswer: "First, I would load the data into a DataFrame. Then, I'd use `df.drop_duplicates(inplace=True)` to remove duplicate rows. To fill missing values, I would iterate through the numerical columns, calculate the median for each using `df[col].median()`, and then use `df[col].fillna(median_value, inplace=True)` to fill the NaNs."
     }
   ],
   "Game Developer / AR/VR Developer": gameArVrDeveloperQuestions,
@@ -448,6 +544,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
       question: "What is your favorite product and why? How would you improve it?",
       suggestedAnswer: "Choose a product you genuinely use and admire. Explain what makes it great from a product perspective (e.g., its clear value proposition, intuitive design, strong user engagement). Then, identify a clear user problem it doesn't solve perfectly and propose a specific, well-reasoned feature improvement. This shows you can think critically about products."
+    },
+    {
+      question: "How would you use a tool like Mixpanel or Amplitude to analyze a user funnel and identify drop-off points?",
+      suggestedAnswer: "I would define the key steps in a user journey, such as 'Signed Up', 'Created Project', and 'Invited Teammate', and set these up as events in the analytics tool. Then, I would build a funnel visualization to see the conversion rate between each step. A large drop-off between two steps indicates a point of friction that needs investigation."
+    },
+    {
+      question: "What is a Product Requirements Document (PRD)? What are the key sections you would include in one?",
+      suggestedAnswer: "A PRD is a document that outlines the purpose, features, and requirements of a product or feature. Key sections include: 1. Problem Statement: What user problem are we solving? 2. Goals/Objectives: What are the success metrics? 3. User Stories/Use Cases: Descriptions of how users will interact with the feature. 4. Features and Requirements: A detailed list of what needs to be built. 5. Design Mockups: Links to visual designs. 6. Out of Scope: What we are explicitly not building."
     }
   ]
 };
