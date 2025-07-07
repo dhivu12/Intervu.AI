@@ -7,7 +7,7 @@ export const Logo = () => {
             <BrainCircuit size={36} className="text-white" />
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-gray-100 sm:text-4xl">
-            AI Interview Sim
+            Intervu.Ai
         </h1>
     </div>
   );
