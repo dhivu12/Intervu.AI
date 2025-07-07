@@ -31,6 +31,14 @@ const generalQuestions: Question[] = [
   {
     question: "Tell me about a time you received difficult feedback. How did you handle it?",
     suggestedAnswer: "Focus on your receptiveness and growth. 'In a code review, a senior developer pointed out that my approach was inefficient. Initially, I was a bit defensive, but I took a step back and asked them to walk me through their suggestion. I realized they were right, and their approach was much better. I thanked them for the feedback and have used that pattern ever since. It taught me to see feedback as a gift for improvement, not a criticism.'"
+  },
+  {
+    question: "Tell me about a project you are particularly proud of.",
+    suggestedAnswer: "Structure your answer using the STAR method. Describe the project (Situation), your specific role and responsibilities (Task), the actions you took and the challenges you overcame (Action), and the positive outcome or result. Quantify the result if possible (e.g., 'increased performance by 15%')."
+  },
+  {
+    question: "Describe a time you had to learn a new technology quickly.",
+    suggestedAnswer: "Explain your learning process. 'I was tasked with building a feature using a technology I'd never used before. I started by reading the official documentation to understand the core concepts. Then, I built a small proof-of-concept project to apply what I'd learned. I also sought advice from a senior team member who had experience with it. This combination of theory, practice, and mentorship allowed me to become productive within a week.'"
   }
 ];
 
@@ -74,6 +82,14 @@ const softwareEngineerSDEQuestions: Question[] = [
   {
     question: "How would you design a distributed key-value store like Amazon's DynamoDB? Discuss partitioning, replication, and consistency.",
     suggestedAnswer: "I'd use consistent hashing to partition the data across nodes. Each node would be replicated to several other nodes for fault tolerance. For consistency, I'd use a tunable model, like eventual consistency for high availability, but also offer strongly consistent reads at a higher latency cost. I'd use a mechanism like vector clocks to handle conflicting writes."
+  },
+  {
+    question: "What is the difference between eventual consistency and strong consistency?",
+    suggestedAnswer: "Strong consistency guarantees that any read will return the most recent write, but this can come at the cost of higher latency. Eventual consistency means that, given enough time, all replicas of the data will become consistent. It offers lower latency and higher availability, but a read might return stale data. The choice depends on the application's requirements."
+  },
+  {
+    question: "How does garbage collection work in a language like Java or Go?",
+    suggestedAnswer: "Garbage collection is an automatic memory management process. The garbage collector identifies objects in memory that are no longer referenced by the application and reclaims their memory. A common algorithm is 'mark-and-sweep,' where it first marks all reachable objects and then sweeps through memory, freeing any unmarked objects."
   }
 ];
 
@@ -117,6 +133,14 @@ const fullStackDeveloperQuestions: Question[] = [
   {
     question: "What is Server-Side Rendering (SSR) and how does it differ from Static Site Generation (SSG) in a framework like Next.js?",
     suggestedAnswer: "SSR generates the HTML for a page on the server in response to each request. This is great for pages with dynamic, user-specific content. SSG generates the HTML at build time, so a static file is served for every request, which is extremely fast. SSG is ideal for content that doesn't change often, like a blog post or marketing page."
+  },
+  {
+    question: "How would you implement caching in a full-stack application? Discuss different layers of caching.",
+    suggestedAnswer: "Caching can be implemented at multiple layers. On the client-side, the browser can cache assets. On the server-side, I can use an in-memory cache like Redis to store frequently accessed data, reducing database load. A Content Delivery Network (CDN) can cache static assets at edge locations, closer to the user, for faster delivery."
+  },
+  {
+    question: "Describe your experience with containerization using Docker. How does it help in a full-stack workflow?",
+    suggestedAnswer: "Docker allows me to package an application with all its dependencies into a standardized unit. This ensures that the development environment is identical to the production environment, eliminating 'it works on my machine' problems. It simplifies setup for new developers and streamlines the CI/CD pipeline."
   }
 ];
 
@@ -160,6 +184,14 @@ const aiMlEngineerQuestions: Question[] = [
   {
     question: "What is transfer learning and how would you apply it to an image classification task using a pre-trained model from TensorFlow Hub or PyTorch Hub?",
     suggestedAnswer: "Transfer learning is a technique where a model developed for a task is reused as the starting point for a model on a second task. I would load a pre-trained model (like MobileNetV2), freeze the convolutional base to preserve its learned features, and then add my own new classifier layers on top. I would then train only these new layers on my specific dataset, which is much faster and requires less data than training from scratch."
+  },
+  {
+    question: "Explain the difference between Gradient Boosting and Random Forest.",
+    suggestedAnswer: "Both are ensemble methods. Random Forest builds many decision trees in parallel on different subsets of the data and averages their predictions. Gradient Boosting builds trees sequentially, where each new tree tries to correct the errors of the previous one. Gradient Boosting is often more accurate but can be more prone to overfitting."
+  },
+  {
+    question: "You've deployed a model and its performance is degrading over time. What could be the causes and how would you address it?",
+    suggestedAnswer: "This is likely due to model drift or data drift, where the statistical properties of the input data have changed since the model was trained. To address this, I would implement a monitoring system to detect drift. When detected, I would retrain the model on new, representative data and potentially re-evaluate the feature engineering process."
   }
 ];
 
@@ -199,6 +231,14 @@ const mobileAppDeveloperQuestions: Question[] = [
   {
     question: "In Flutter, what is the difference between a `StatelessWidget` and a `StatefulWidget`? Describe how state is managed in a `StatefulWidget`.",
     suggestedAnswer: "A `StatelessWidget` is immutable; its properties cannot change over time. A `StatefulWidget` can maintain state that might change during the widget's lifetime. State is managed in a separate `State` object. When the internal state changes (e.g., via a call to `setState()`), the framework is prompted to rebuild the widget to reflect the new state."
+  },
+  {
+    question: "Explain the Model-View-ViewModel (MVVM) architecture pattern in the context of mobile development.",
+    suggestedAnswer: "MVVM separates the UI (View) from the business logic (Model) using a ViewModel. The View observes the ViewModel for data changes and updates itself. The ViewModel fetches data from the Model and exposes it to the View. This decoupling makes the code more testable and maintainable."
+  },
+  {
+    question: "Describe your experience with mobile CI/CD pipelines using tools like Fastlane or Bitrise.",
+    suggestedAnswer: "I've used Fastlane to automate tasks like running tests, managing provisioning profiles, building the app, and uploading it to TestFlight or the Play Store. This is integrated into a CI server like Jenkins or GitHub Actions to create a pipeline that automatically builds and distributes the app on every commit, which speeds up the development cycle."
   }
 ];
 
@@ -242,6 +282,14 @@ const cloudDevOpsEngineerQuestions: Question[] = [
   {
     question: "Describe the components of a Kubernetes control plane (e.g., etcd, kube-apiserver, kube-scheduler). What is the role of each?",
     suggestedAnswer: "The `kube-apiserver` exposes the Kubernetes API. `etcd` is a key-value store for all cluster data. The `kube-scheduler` watches for newly created pods and assigns them to nodes. The `kube-controller-manager` runs controller processes. These components work together to manage the state of the cluster."
+  },
+  {
+    question: "Explain the concept of GitOps. How does it differ from traditional CI/CD?",
+    suggestedAnswer: "GitOps is a way of implementing continuous deployment for cloud-native applications. It uses Git as a single source of truth for declarative infrastructure and applications. An automated process ensures the production environment matches the state described in the repository. The main difference is that the deployment process is pull-based (an agent in the cluster pulls changes) rather than push-based (the CI server pushes changes)."
+  },
+  {
+    question: "What is Site Reliability Engineering (SRE) and how does it relate to DevOps?",
+    suggestedAnswer: "SRE is a discipline that incorporates aspects of software engineering and applies them to infrastructure and operations problems. It shares the same goals as DevOps but is more prescriptive, focusing on specific practices like setting Service Level Objectives (SLOs), error budgets, and automating away toil. You can think of SRE as a specific implementation of DevOps principles."
   }
 ];
 
@@ -281,6 +329,14 @@ const gameArVrDeveloperQuestions: Question[] = [
   {
     question: "Explain how a quaternion is used to represent rotations in 3D space and why it's often preferred over Euler angles.",
     suggestedAnswer: "A quaternion uses four numbers to represent a rotation in 3D space. They are preferred over Euler angles (pitch, yaw, roll) because they avoid the problem of 'gimbal lock,' where two axes can become aligned, causing a loss of one degree of rotational freedom. Quaternions also make interpolating between rotations smoother."
+  },
+  {
+    question: "What is a draw call and why is it important to minimize them?",
+    suggestedAnswer: "A draw call is a command from the CPU to the GPU to render a group of polygons. Each draw call has a performance overhead. Minimizing draw calls by combining meshes or materials (a process called 'batching') is a critical optimization technique for improving frame rates, especially on mobile and VR platforms."
+  },
+  {
+    question: "In Unreal Engine, what is the difference between a Blueprint and C++? When would you use each?",
+    suggestedAnswer: "Blueprints are a visual scripting system in Unreal that allows for rapid prototyping and is great for designers or for implementing simple logic. C++ provides the best performance and is used for complex systems, core game mechanics, and performance-critical code. A common workflow is to prototype in Blueprints and then convert performance-heavy parts to C++."
   }
 ];
 
@@ -320,6 +376,14 @@ const blockchainDeveloperQuestions: Question[] = [
   {
     question: "How would you use Hardhat or Truffle to compile, deploy, and test a simple Solidity smart contract?",
     suggestedAnswer: "I would set up a project, write my Solidity contract in the `contracts` folder, and create a deployment script in the `scripts` folder. I'd configure my network settings (e.g., for a local testnet or a public testnet like Sepolia). Then I would run `npx hardhat compile`, `npx hardhat run scripts/deploy.js`, and write tests using Chai and Mocha in the `test` folder, which can be run with `npx hardhat test`."
+  },
+  {
+    question: "What is the 'oracle problem' in blockchain?",
+    suggestedAnswer: "The oracle problem is the challenge of getting external, real-world data onto a blockchain in a secure and trustless manner. Since blockchains are deterministic systems, they cannot natively fetch external data. Oracles are the solution, but they introduce a point of centralization and trust, which is what the problem refers to."
+  },
+  {
+    question: "Explain what a flash loan is and how it can be used in attacks.",
+    suggestedAnswer: "A flash loan is an uncollateralized loan in the DeFi space that must be borrowed and repaid within the same blockchain transaction. They are used for arbitrage and other complex financial strategies. Attackers can use them to borrow huge sums of money to manipulate markets or exploit vulnerabilities in DeFi protocols, then pay back the loan, all in a single atomic transaction."
   }
 ];
 
@@ -359,6 +423,14 @@ const uiUxDesignerQuestions: Question[] = [
   {
     question: "What is Storybook, and how can it help bridge the gap between design and development in a component-based project?",
     suggestedAnswer: "Storybook is a tool for developing UI components in isolation. It allows designers and developers to see all the states and variants of a component without having to run the full application. This creates a shared language and ensures the final coded component perfectly matches the design intent, reducing inconsistencies."
+  },
+  {
+    question: "What are Jakob Nielsen's 10 usability heuristics? Give an example of one.",
+    suggestedAnswer: "They are a set of broad rules of thumb for user interface design. An example is 'Visibility of system status,' which means the system should always keep users informed about what is going on, through appropriate feedback within a reasonable time. A loading spinner is a classic example of this."
+  },
+  {
+    question: "Describe your process for creating and maintaining a user journey map.",
+    suggestedAnswer: "I start by defining the user persona and the scenario. Then, I map out the phases of their journey, detailing their actions, thoughts, and feelings at each stage. I identify pain points and opportunities for improvement. The map is a living document, updated with new insights from user research and data analytics to reflect the evolving user experience."
   }
 ];
 
@@ -403,6 +475,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "Explain the difference between Redux and React's Context API for state management. When would you choose one over the other?",
         suggestedAnswer: "Context API is great for passing state down through a component tree without prop drilling, but it can cause performance issues if the state updates frequently, as it re-renders all consuming components. Redux is a more robust solution with a centralized store, middleware for side effects, and performance optimizations. I'd use Context for simple, low-frequency state (like theme) and Redux for complex, high-frequency global state."
+    },
+    {
+      question: "What is the difference between `useEffect` and `useLayoutEffect` in React?",
+      suggestedAnswer: "`useEffect` runs asynchronously after the render is painted to the screen. `useLayoutEffect` runs synchronously after React has performed all DOM mutations but before the browser has painted. You should use `useLayoutEffect` when you need to read layout from the DOM and synchronously re-render, for example, to measure the size of an element."
+    },
+    {
+      question: "How do you handle accessibility (a11y) in a complex single-page application?",
+      suggestedAnswer: "I use semantic HTML, ensure all interactive elements are keyboard accessible, manage focus when routes change or modals appear, and use ARIA attributes to provide context to screen readers. I also use tools like axe for automated accessibility testing during development."
     }
   ],
   "Backend Developer": [
@@ -441,6 +521,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "How does connection pooling work in a database, and why is it important for a high-traffic application?",
         suggestedAnswer: "Connection pooling maintains a cache of database connections that can be reused for future requests. Establishing a database connection is an expensive operation. In a high-traffic application, creating a new connection for every request would be very slow and resource-intensive. Connection pooling significantly improves performance by reusing existing connections."
+    },
+    {
+      question: "What is the CAP theorem and how does it apply to distributed databases?",
+      suggestedAnswer: "The CAP theorem states that a distributed data store cannot simultaneously provide more than two out of the following three guarantees: Consistency, Availability, and Partition tolerance. When designing a distributed system, you must often choose between consistency and availability when a network partition occurs."
+    },
+    {
+      question: "Explain different API authentication methods you have used, such as API Keys, OAuth 2.0, or JWT.",
+      suggestedAnswer: "API Keys are simple tokens for identifying an application. JWTs are self-contained tokens for authenticating users. OAuth 2.0 is a framework for delegated authorization, allowing an application to access resources on behalf of a user without getting their password, which is common for 'Login with Google/Facebook' features."
     }
   ],
   "Cybersecurity Engineer": [
@@ -479,6 +567,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "Explain the concept of a Security Information and Event Management (SIEM) system and its role in a Security Operations Center (SOC).",
         suggestedAnswer: "A SIEM system aggregates log data from various sources across a network, analyzes it in real-time to identify potential security threats, and generates alerts. In a SOC, analysts use the SIEM as their primary tool to monitor for incidents, investigate alerts, and respond to threats, providing a centralized view of the organization's security posture."
+    },
+    {
+      question: "What is the difference between a vulnerability assessment and a penetration test?",
+      suggestedAnswer: "A vulnerability assessment is an automated scan to identify known vulnerabilities in a system. A penetration test is a more active, hands-on process where a security professional simulates an attack to find and exploit vulnerabilities, testing the organization's defenses in a real-world scenario."
+    },
+    {
+      question: "Explain the concept of a Zero Trust security model.",
+      suggestedAnswer: "Zero Trust is a security model based on the principle of 'never trust, always verify.' It assumes that threats can exist both inside and outside the network, so it requires strict identity verification for every person and device trying to access resources on a private network, regardless of where they are located."
     }
   ],
   "Mobile App Developer": mobileAppDeveloperQuestions,
@@ -519,6 +615,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
         question: "Using the Pandas library in Python, how would you clean a dataset by removing duplicate rows and filling missing numerical values with the column's median?",
         suggestedAnswer: "First, I would load the data into a DataFrame. Then, I'd use `df.drop_duplicates(inplace=True)` to remove duplicate rows. To fill missing values, I would iterate through the numerical columns, calculate the median for each using `df[col].median()`, and then use `df[col].fillna(median_value, inplace=True)` to fill the NaNs."
+    },
+    {
+      question: "What is the difference between correlation and causation?",
+      suggestedAnswer: "Correlation is a statistical measure that indicates the extent to which two variables fluctuate together. Causation indicates that one event is the result of the occurrence of the other event. A classic example is that ice cream sales and crime rates are correlated, but one doesn't cause the other; the cause is a third variable, hot weather."
+    },
+    {
+      question: "Explain different types of SQL JOINs (INNER, LEFT, RIGHT, FULL OUTER).",
+      suggestedAnswer: "INNER JOIN returns records that have matching values in both tables. LEFT JOIN returns all records from the left table, and the matched records from the right table. RIGHT JOIN returns all records from the right table, and the matched records from the left table. FULL OUTER JOIN returns all records when there is a match in either the left or right table."
     }
   ],
   "Game Developer / AR/VR Developer": gameArVrDeveloperQuestions,
@@ -552,6 +656,14 @@ export const roleBasedQuestions: RoleQuestions = {
     {
       question: "What is a Product Requirements Document (PRD)? What are the key sections you would include in one?",
       suggestedAnswer: "A PRD is a document that outlines the purpose, features, and requirements of a product or feature. Key sections include: 1. Problem Statement: What user problem are we solving? 2. Goals/Objectives: What are the success metrics? 3. User Stories/Use Cases: Descriptions of how users will interact with the feature. 4. Features and Requirements: A detailed list of what needs to be built. 5. Design Mockups: Links to visual designs. 6. Out of Scope: What we are explicitly not building."
+    },
+    {
+      question: "How do you define a Minimum Viable Product (MVP)?",
+      suggestedAnswer: "An MVP is the version of a new product that allows a team to collect the maximum amount of validated learning about customers with the least amount of effort. It's not about being minimal; it's about delivering a core value proposition to a specific set of users to test a hypothesis."
+    },
+    {
+      question: "What are North Star Metrics and Pirate Metrics (AARRR)? Give an example of each.",
+      suggestedAnswer: "A North Star Metric is a single metric that best captures the core value your product delivers to customers. For Airbnb, it might be 'nights booked.' Pirate Metrics (AARRR) are a framework for customer lifecycle: Acquisition, Activation, Retention, Referral, Revenue. For example, 'Activation' could be the percentage of users who complete a key action within their first week."
     }
   ]
 };
