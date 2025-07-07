@@ -72,6 +72,12 @@ const generateFeedback = (userAnswer: string, question: Question): { sentiment: 
     return { sentiment, feedback };
 }
 
+const isExplanationRequest = (text: string): boolean => {
+    const lowerText = text.toLowerCase().trim();
+    const explanationTriggers = ['explain', 'what do you mean', 'clarify', 'more details', 'elaborate'];
+    return explanationTriggers.some(trigger => lowerText.includes(trigger));
+};
+
 interface ChatWindowProps {
   setActiveSentiment: (sentiment: Sentiment) => void;
 }
@@ -116,6 +122,14 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
 
     try {
       let newMessages: Message[] = [];
+
+      if (interviewState === 'in_progress' && currentQuestion && isExplanationRequest(currentInput)) {
+          const explanationText = `Of course. This question is designed to test your understanding of a key concept. Here's a breakdown of what a strong answer might cover:\n\n${currentQuestion.suggestedAnswer}\n\nNow, please try to answer in your own words.`;
+          newMessages.push({ text: explanationText, sender: "ai" });
+          setMessages((prev) => [...prev, ...newMessages]);
+          setIsTyping(false);
+          return; // Exit early, don't treat it as an answer
+      }
 
       if (interviewState === 'awaiting_role') {
         const userRole = currentInput.trim();
@@ -181,7 +195,7 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
         case 'awaiting_role':
             return "e.g., Frontend Developer";
         case 'in_progress':
-            return "Type your answer...";
+            return "Type your answer or ask to 'explain'...";
         case 'finished':
             return "Interview complete.";
         default:
