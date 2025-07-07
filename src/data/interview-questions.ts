@@ -436,9 +436,39 @@ const uiUxDesignerQuestions: Question[] = [
 
 export const roleBasedQuestions: RoleQuestions = {
   "General": generalQuestions,
-  "Software Engineer (SDE – Product-based Companies)": softwareEngineerSDEQuestions,
-  "Full-Stack Developer": fullStackDeveloperQuestions,
-  "AI / Machine Learning Engineer": aiMlEngineerQuestions,
+  "Software Engineer (SDE – Product-based Companies)": [
+    ...softwareEngineerSDEQuestions,
+    {
+      question: "Explain how you would implement a Trie data structure from scratch. What are its primary use cases?",
+      suggestedAnswer: "A Trie is a tree-like data structure where nodes store characters of a string. Each node has children for each possible next character. It's primarily used for efficient prefix-based searches, like autocomplete features or spell checkers. Implementation involves a root node and functions to insert a word by creating a path of nodes, and a function to search for a word or prefix by traversing that path."
+    },
+    {
+      question: "Describe the TCP three-way handshake process. What is its purpose?",
+      suggestedAnswer: "It's a process used to establish a connection between a client and a server. It involves three steps: SYN (client sends a synchronize request), SYN-ACK (server acknowledges the request and sends its own sync request), and ACK (client acknowledges the server's request). Its purpose is to ensure both client and server are ready to communicate and agree on initial sequence numbers."
+    }
+  ],
+  "Full-Stack Developer": [
+    ...fullStackDeveloperQuestions,
+    {
+      question: "What is API versioning and what are some common strategies for implementing it?",
+      suggestedAnswer: "API versioning is the practice of managing changes to an API without breaking client applications. Common strategies include URI versioning (e.g., /api/v1/users), using a custom request header (e.g., X-API-VERSION: 1), or using the Accept header with a custom media type (e.g., Accept: application/vnd.myapp.v1+json). URI versioning is the most common and straightforward."
+    },
+    {
+      question: "Explain the concept of database transactions and the ACID properties.",
+      suggestedAnswer: "A transaction is a sequence of operations performed as a single logical unit of work. ACID properties guarantee transaction validity even in the event of errors or power failures. They are: Atomicity (all operations complete or none do), Consistency (the database remains in a valid state), Isolation (concurrent transactions don't affect each other), and Durability (once a transaction is committed, it remains so)."
+    }
+  ],
+  "AI / Machine Learning Engineer": [
+    ...aiMlEngineerQuestions,
+    {
+      question: "How does the backpropagation algorithm work in a neural network?",
+      suggestedAnswer: "Backpropagation is the algorithm used to train neural networks. After a forward pass calculates the output and the error, backpropagation calculates the gradient of the loss function with respect to the weights of the network. It moves backward from the output layer to the input layer, applying the chain rule to calculate the contribution of each weight to the error. These gradients are then used by an optimization algorithm, like gradient descent, to update the weights."
+    },
+    {
+      question: "You are faced with a highly imbalanced dataset for a binary classification task. How would you handle it?",
+      suggestedAnswer: "First, I would choose appropriate metrics like Precision, Recall, and F1-score instead of accuracy. For handling the imbalance, I could use techniques like oversampling the minority class (e.g., using SMOTE), undersampling the majority class, or using a cost-sensitive learning algorithm that applies a higher penalty for misclassifying the minority class."
+    }
+  ],
   "Frontend Developer": [
     {
         question: "What is the difference between `let`, `const`, and `var` in JavaScript?",
@@ -483,6 +513,10 @@ export const roleBasedQuestions: RoleQuestions = {
     {
       question: "How do you handle accessibility (a11y) in a complex single-page application?",
       suggestedAnswer: "I use semantic HTML, ensure all interactive elements are keyboard accessible, manage focus when routes change or modals appear, and use ARIA attributes to provide context to screen readers. I also use tools like axe for automated accessibility testing during development."
+    },
+    {
+      question: "Explain the browser's critical rendering path.",
+      suggestedAnswer: "The critical rendering path is the sequence of steps the browser goes through to convert HTML, CSS, and JavaScript into pixels on the screen. It includes constructing the DOM and CSSOM trees, combining them into a render tree, performing layout to calculate the geometry of each node, and finally painting the pixels. Optimizing this path is key to faster page loads."
     }
   ],
   "Backend Developer": [
@@ -529,6 +563,10 @@ export const roleBasedQuestions: RoleQuestions = {
     {
       question: "Explain different API authentication methods you have used, such as API Keys, OAuth 2.0, or JWT.",
       suggestedAnswer: "API Keys are simple tokens for identifying an application. JWTs are self-contained tokens for authenticating users. OAuth 2.0 is a framework for delegated authorization, allowing an application to access resources on behalf of a user without getting their password, which is common for 'Login with Google/Facebook' features."
+    },
+    {
+      question: "What are different caching strategies you can implement (e.g., cache-aside, write-through, read-through)?",
+      suggestedAnswer: "Cache-aside: The application is responsible for reading and writing from the cache. Write-through: The application writes to the cache, and the cache writes to the database. This keeps the cache consistent but adds write latency. Read-through: The application reads from the cache; if data is missing, the cache fetches it from the database. This simplifies application logic."
     }
   ],
   "Cybersecurity Engineer": [
@@ -575,10 +613,34 @@ export const roleBasedQuestions: RoleQuestions = {
     {
       question: "Explain the concept of a Zero Trust security model.",
       suggestedAnswer: "Zero Trust is a security model based on the principle of 'never trust, always verify.' It assumes that threats can exist both inside and outside the network, so it requires strict identity verification for every person and device trying to access resources on a private network, regardless of where they are located."
+    },
+    {
+      question: "Describe the steps of the TLS handshake.",
+      suggestedAnswer: "The TLS handshake is a process for establishing a secure communication channel. It involves the client sending a 'ClientHello', the server responding with a 'ServerHello' and its SSL certificate, the client verifying the certificate and sending a session key encrypted with the server's public key, and both parties confirming with a 'Finished' message. This establishes a secure, encrypted session."
     }
   ],
-  "Mobile App Developer": mobileAppDeveloperQuestions,
-  "Cloud / DevOps Engineer": cloudDevOpsEngineerQuestions,
+  "Mobile App Developer": [
+    ...mobileAppDeveloperQuestions,
+    {
+      question: "Explain how memory management works on iOS with Automatic Reference Counting (ARC). What is a retain cycle and how do you break it?",
+      suggestedAnswer: "ARC automatically manages memory by keeping track of how many strong references exist to an object. When the reference count drops to zero, the object is deallocated. A retain cycle occurs when two objects hold strong references to each other, so neither can be deallocated. You break it by using `weak` or `unowned` references for one of the connections, which doesn't increase the reference count."
+    },
+    {
+      question: "In Android, what is the difference between a Service, a BroadcastReceiver, and a ContentProvider?",
+      suggestedAnswer: "A `Service` is an application component that can perform long-running operations in the background. A `BroadcastReceiver` is a component that responds to system-wide broadcast announcements. A `ContentProvider` manages a shared set of application data, providing a way for different applications to securely access or modify data."
+    }
+  ],
+  "Cloud / DevOps Engineer": [
+    ...cloudDevOpsEngineerQuestions,
+    {
+      question: "In Kubernetes, what is the difference between a Service and an Ingress?",
+      suggestedAnswer: "A `Service` exposes an application running on a set of Pods as a network service, providing a stable IP address and load balancing within the cluster. An `Ingress` is an API object that manages external access to the services in a cluster, typically HTTP. Ingress can provide load balancing, SSL termination, and name-based virtual hosting."
+    },
+    {
+      question: "How would you manage Terraform state for a team? What are the risks of not doing so?",
+      suggestedAnswer: "I would use a remote backend like an AWS S3 bucket with DynamoDB for state locking. This provides a central, shared location for the state file. The risks of not doing this include state file conflicts if multiple people run Terraform at once, and the potential for a local state file to be lost, which would orphan the infrastructure."
+    }
+  ],
   "Data Scientist / Data Analyst": [
     {
         question: "Explain the difference between a classification and a regression model.",
@@ -623,11 +685,45 @@ export const roleBasedQuestions: RoleQuestions = {
     {
       question: "Explain different types of SQL JOINs (INNER, LEFT, RIGHT, FULL OUTER).",
       suggestedAnswer: "INNER JOIN returns records that have matching values in both tables. LEFT JOIN returns all records from the left table, and the matched records from the right table. RIGHT JOIN returns all records from the right table, and the matched records from the left table. FULL OUTER JOIN returns all records when there is a match in either the left or right table."
+    },
+    {
+      question: "What are SQL window functions, and can you provide an example of one?",
+      suggestedAnswer: "Window functions perform a calculation across a set of table rows that are somehow related to the current row. Unlike aggregate functions, they do not collapse the rows. For example, `ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC)` would assign a rank to each employee within their department based on salary."
     }
   ],
-  "Game Developer / AR/VR Developer": gameArVrDeveloperQuestions,
-  "Blockchain Developer": blockchainDeveloperQuestions,
-  "UI/UX Designer": uiUxDesignerQuestions,
+  "Game Developer / AR/VR Developer": [
+    ...gameArVrDeveloperQuestions,
+    {
+      question: "Explain the difference between forward and deferred rendering. When would you choose one over the other?",
+      suggestedAnswer: "Forward rendering renders each object one by one, calculating lighting for each. It's simple and works well with transparency. Deferred rendering separates geometry and lighting passes. It first renders scene information (like position, normals, color) to multiple buffers (the G-buffer) and then does a single lighting pass for all objects. Deferred is much more efficient for scenes with many dynamic lights."
+    },
+    {
+      question: "What is Physically Based Rendering (PBR) and what are its core principles?",
+      suggestedAnswer: "PBR is a rendering approach that aims to simulate how light interacts with materials in a more physically plausible way. Its core principles are based on material properties like base color, metallic, roughness, and ambient occlusion. This approach leads to more realistic and consistent visuals under different lighting conditions."
+    }
+  ],
+  "Blockchain Developer": [
+    ...blockchainDeveloperQuestions,
+    {
+      question: "What are Layer 2 scaling solutions, and what is the difference between an Optimistic Rollup and a ZK-Rollup?",
+      suggestedAnswer: "Layer 2 solutions process transactions off the main Ethereum chain (Layer 1) to increase speed and reduce costs. Optimistic Rollups assume transactions are valid by default and use a fraud-proof system where observers can challenge invalid transactions. ZK-Rollups use complex cryptography (zero-knowledge proofs) to prove the validity of a batch of transactions without revealing the data itself. ZK-Rollups are more complex but offer faster finality."
+    },
+    {
+      question: "What is Miner Extractable Value (MEV) and how does it impact the blockchain ecosystem?",
+      suggestedAnswer: "MEV is the profit a miner (or validator) can make through their ability to arbitrarily include, exclude, or reorder transactions within a block. This can be used for front-running or arbitrage opportunities. It's a complex issue that can affect network fairness and security, leading to things like gas price spikes and transaction censorship."
+    }
+  ],
+  "UI/UX Designer": [
+    ...uiUxDesignerQuestions,
+    {
+      question: "How do you work with developers to translate a complex animation or micro-interaction from your design tool (like Figma or After Effects) into a web implementation?",
+      suggestedAnswer: "I provide detailed specifications, including timing, easing curves, and property changes. I often export the animation as a Lottie file, which is a JSON-based animation file that can be rendered natively on web and mobile. This ensures the final implementation is pixel-perfect and performs well, without the developer having to recreate it from scratch."
+    },
+    {
+      question: "A developer tells you that your design is not feasible due to a technical constraint. How do you respond?",
+      suggestedAnswer: "My first step is to understand the constraint fully. I'd ask the developer to explain the 'why' behind the limitation. Then, I'd work collaboratively with them to find an alternative solution that still achieves the user goal, even if it means adjusting the visual design. It's a partnership, not a handoff."
+    }
+  ],
   "Product Manager": [
     {
       question: "How would you decide what feature to build next for our product?",
@@ -664,6 +760,10 @@ export const roleBasedQuestions: RoleQuestions = {
     {
       question: "What are North Star Metrics and Pirate Metrics (AARRR)? Give an example of each.",
       suggestedAnswer: "A North Star Metric is a single metric that best captures the core value your product delivers to customers. For Airbnb, it might be 'nights booked.' Pirate Metrics (AARRR) are a framework for customer lifecycle: Acquisition, Activation, Retention, Referral, Revenue. For example, 'Activation' could be the percentage of users who complete a key action within their first week."
+    },
+    {
+      question: "How do you manage technical debt?",
+      suggestedAnswer: "I view technical debt as a trade-off. I work with the engineering team to understand its impact and categorize it. We then dedicate a portion of our development capacity each sprint (e.g., 10-20%) to paying down high-impact debt. I also make sure to factor in the cost of new debt when prioritizing new features, ensuring we make conscious decisions about it."
     }
   ]
 };
