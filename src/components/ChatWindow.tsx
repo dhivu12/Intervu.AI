@@ -6,6 +6,7 @@ import { ChatMessage } from "./ChatMessage";
 import { Sentiment } from "./SentimentCard";
 import { roleBasedQuestions, Question } from "@/data/interview-questions";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { generateQuestionsFromGemini } from "@/services/geminiService";
 
 type Message = {
   text: string;
@@ -103,7 +104,7 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
     setActiveSentiment('Neutral');
   };
 
-  const handleSend = (e: React.FormEvent) => {
+  const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isTyping || interviewState === 'finished') return;
 
@@ -113,24 +114,28 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
     setInput("");
     setIsTyping(true);
 
-    setTimeout(() => {
+    try {
       let newMessages: Message[] = [];
 
       if (interviewState === 'awaiting_role') {
         const userRole = currentInput.trim();
-        const generalQuestions = roleBasedQuestions["General"] || [];
-        
-        const matchedRoleKey = Object.keys(roleBasedQuestions).find(key => key.toLowerCase() === userRole.toLowerCase());
-
         let questionsForInterview: Question[] = [];
         let greetingText = "";
 
-        if (matchedRoleKey && matchedRoleKey !== "General") {
-            questionsForInterview = [...roleBasedQuestions[matchedRoleKey], ...generalQuestions];
-            greetingText = `Great! We'll start the interview for a ${matchedRoleKey} role.`;
-        } else {
-            questionsForInterview = [...generalQuestions];
-            greetingText = `I don't have specific questions for a "${userRole}" role, so we'll proceed with general interview questions. Let's begin.`;
+        try {
+          questionsForInterview = await generateQuestionsFromGemini(userRole);
+          greetingText = `Great! I've generated some questions for a ${userRole} role using Gemini. Let's begin.`;
+        } catch (error) {
+          console.error(error);
+          const generalQuestions = roleBasedQuestions["General"] || [];
+          const matchedRoleKey = Object.keys(roleBasedQuestions).find(key => key.toLowerCase() === userRole.toLowerCase());
+          
+          if (matchedRoleKey && matchedRoleKey !== "General") {
+              questionsForInterview = [...roleBasedQuestions[matchedRoleKey], ...generalQuestions];
+          } else {
+              questionsForInterview = [...generalQuestions];
+          }
+          greetingText = `I couldn't generate questions with Gemini right now, so I'll use my built-in questions for a "${userRole}" role. Let's begin.`;
         }
 
         const shuffledQuestions = questionsForInterview.sort(() => 0.5 - Math.random());
@@ -163,8 +168,12 @@ export const ChatWindow = ({ setActiveSentiment }: ChatWindowProps) => {
       }
       
       setMessages((prev) => [...prev, ...newMessages]);
+    } catch (error) {
+      console.error("An error occurred in handleSend:", error);
+      setMessages((prev) => [...prev, { text: "Sorry, something went wrong. Please try again.", sender: "ai" }]);
+    } finally {
       setIsTyping(false);
-    }, 2000);
+    }
   };
 
   const getPlaceholderText = () => {
