@@ -1,6 +1,5 @@
 import { InterviewSimulator } from "@/components/InterviewSimulator";
 import { Logo } from "@/components/Logo";
-import { MadeWithDyad } from "@/components/made-with-dyad";
 
 const Index = () => {
   return (
@@ -21,7 +20,7 @@ const Index = () => {
         </div>
         
         <footer className="mt-4">
-          <MadeWithDyad />
+          {/* Watermark removed */}
         </footer>
       </main>
     </div>
